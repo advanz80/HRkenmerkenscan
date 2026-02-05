@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontdek Je Kwaliteiten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .progress-container {
+            background: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Intro Screen */
+        .intro-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .intro-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .intro-card p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .intro-steps {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .intro-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 0.95rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Question Screen */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .quality-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quality-option {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quality-option:hover {
+            border-color: var(--primary-light);
+            background: white;
+        }
+
+        .quality-option.selected {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .quality-option.selected .quality-name {
+            color: var(--primary);
+        }
+
+        .quality-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .quality-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .selection-counter {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .selection-counter span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Ranking Screen */
+        .ranking-intro {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .ranking-intro h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ranking-item {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            touch-action: none;
+        }
+
+        .ranking-item:active {
+            cursor: grabbing;
+            box-shadow: var(--shadow-lg);
+            transform: scale(1.02);
+        }
+
+        .ranking-item.dragging {
+            opacity: 0.8;
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .ranking-item.dragging .quality-desc {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .rank-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .ranking-item:nth-child(1) .rank-number { background: #FFD700; color: #333; }
+        .ranking-item:nth-child(2) .rank-number { background: #C0C0C0; color: #333; }
+        .ranking-item:nth-child(3) .rank-number { background: #CD7F32; color: white; }
+
+        .drag-handle {
+            color: var(--text-light);
+            margin-left: auto;
+            font-size: 1.2rem;
+        }
+
+        /* Results Screen */
+        .results-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .results-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .result-card.rank-1 { border-left-color: #FFD700; }
+        .result-card.rank-2 { border-left-color: #C0C0C0; }
+        .result-card.rank-3 { border-left-color: #CD7F32; }
+        .result-card.rank-4 { border-left-color: var(--secondary); }
+        .result-card.rank-5 { border-left-color: var(--primary-light); }
+
+        .result-rank {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .rank-1 .result-rank { background: #FFD700; color: #333; }
+        .rank-2 .result-rank { background: #C0C0C0; color: #333; }
+        .rank-3 .result-rank { background: #CD7F32; }
+        .rank-4 .result-rank { background: var(--secondary); }
+        .rank-5 .result-rank { background: var(--primary-light); }
+
+        .result-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .result-definition {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .result-behavior {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+
+        .result-behavior-label {
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .results-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        /* Share/Export */
+        .share-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .share-section h4 {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-share {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .intro-card, .question-card {
+                padding: 20px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+            }
+
+            .quality-option {
+                padding: 14px;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Kwaliteiten Assessment</h1>
+        </header>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progressText" style="display: none;"></div>
+
+        <!-- Intro Screen -->
+        <div class="screen active" id="introScreen">
+            <div class="intro-card">
+                <h2>Ontdek Je Top 5 Kwaliteiten</h2>
+                <p>Welkom bij de kwaliteiten-assessment! Deze tool helpt je om je sterkste kwaliteiten te identificeren.</p>
+
+                <div class="intro-steps">
+                    <div class="intro-step">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Je krijgt steeds een groep kwaliteiten te zien. Selecteer per groep de kwaliteiten die het beste bij jou passen.</div>
+                    </div>
+                    <div class="intro-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Daarna rangschik je de geselecteerde kwaliteiten om je top 5 te bepalen.</div>
+                    </div>
+                    <div class="intro-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Je ontvangt een overzicht van je top 5 kwaliteiten met uitleg over het bijbehorende gedrag.</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.9rem; color: var(--text-light);">De assessment duurt ongeveer 5-10 minuten.</p>
+
+                <button class="btn btn-primary" onclick="startAssessment()" style="margin-top: 20px;">
+                    Start Assessment
+                </button>
+            </div>
+        </div>
+
+        <!-- Question Screen -->
+        <div class="screen" id="questionScreen">
+            <div class="question-card">
+                <h3 class="question-title">Welke kwaliteiten passen het beste bij jou?</h3>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px;">Selecteer 1 tot 3 kwaliteiten die jou het beste omschrijven.</p>
+
+                <div class="quality-options" id="qualityOptions">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <div class="selection-counter">
+                    <span id="selectionCount">0</span> van maximaal 3 geselecteerd
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()">Vorige</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Volgende</button>
+            </div>
+        </div>
+
+        <!-- Ranking Screen -->
+        <div class="screen" id="rankingScreen">
+            <div class="ranking-intro">
+                <h3>Rangschik Je Kwaliteiten</h3>
+                <p style="color: var(--text-light);">Sleep de kwaliteiten in volgorde van belangrijkheid. Je nummer 1 staat bovenaan.</p>
+            </div>
+
+            <div class="ranking-list" id="rankingList">
+                <!-- Ranking items will be inserted here -->
+            </div>
+
+            <div class="nav-buttons" style="margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="backToQuestions()">Terug</button>
+                <button class="btn btn-primary" onclick="showResults()">Bekijk Resultaten</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="screen" id="resultsScreen">
+            <div class="results-header">
+                <h2>Jouw Top 5 Kwaliteiten</h2>
+                <p style="color: var(--text-light);">Dit zijn de kwaliteiten die jou het beste omschrijven.</p>
+            </div>
+
+            <div id="resultsContainer">
+                <!-- Results will be inserted here -->
+            </div>
+
+            <div class="share-section">
+                <h4>Deel of bewaar je resultaten</h4>
+                <div class="share-buttons">
+                    <button class="btn btn-secondary btn-share" onclick="copyResults()">Kopieer tekst</button>
+                    <button class="btn btn-secondary btn-share" onclick="downloadResults()">Download PDF</button>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="btn btn-primary" onclick="restartAssessment()">Opnieuw beginnen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // All qualities data
+        const qualities = [
+            {
+                name: "Aanpassingsvermogen",
+                definition: "Doelmatig blijven handelen bij veranderende omstandigheden.",
+                behavior: "Past aanpak aan nieuwe situaties aan; blijft effectief ondanks tegenslag; schakelt snel tussen taken."
+            },
+            {
+                name: "Ambitie",
+                definition: "Gericht zijn op het bereiken van hogere verantwoordelijkheden en prestaties.",
+                behavior: "Zoekt uitdagingen; streeft naar promotie of zwaardere taken; stelt hoge doelen."
+            },
+            {
+                name: "Besluitvaardigheid",
+                definition: "Beslissingen nemen of oordelen uitspreken, ook bij onzekerheid.",
+                behavior: "Neemt tijdig besluiten; durft knopen door te hakken; accepteert consequenties; blijft bij genomen beslissingen."
+            },
+            {
+                name: "Coachen",
+                definition: "Medewerkers begeleiden in hun ontwikkeling.",
+                behavior: "Vraagt door; geeft constructieve feedback; stimuleert reflectie; ondersteunt leerproces."
+            },
+            {
+                name: "Conceptueel denken",
+                definition: "Problemen en situaties in een breder kader plaatsen.",
+                behavior: "Legt verbanden; denkt abstract; ontwikkelt modellen en schema's; ziet grote lijnen."
+            },
+            {
+                name: "Contracteren",
+                definition: "Toewerken naar het afsluiten van bindende afspraken of overeenkomsten.",
+                behavior: "Maakt duidelijke afspraken; legt afspraken schriftelijk vast; zorgt voor commitment bij partijen."
+            },
+            {
+                name: "Creativiteit",
+                definition: "Met originele oplossingen en ideeën komen.",
+                behavior: "Bedenkt nieuwe invalshoeken; ziet mogelijkheden; denkt \"out of the box\"; stelt verbeteringen voor."
+            },
+            {
+                name: "Delegeren",
+                definition: "Taken en verantwoordelijkheden toewijzen en benutten van capaciteiten van medewerkers.",
+                behavior: "Geeft verantwoordelijkheid; legt verwachtingen uit; vertrouwt taken toe; volgt voortgang op afstand."
+            },
+            {
+                name: "Discipline",
+                definition: "Volgen van beleid, procedures en richtlijnen.",
+                behavior: "Houdt zich aan regels; werkt volgens afgesproken kaders; zoekt duidelijkheid bij twijfel."
+            },
+            {
+                name: "Durf",
+                definition: "Risico's durven nemen om kansen te benutten.",
+                behavior: "Neemt beslissingen ondanks onzekerheid; spreekt zich uit; gaat nieuwe uitdagingen aan."
+            },
+            {
+                name: "Economische besluitvaardigheid",
+                definition: "Neemt weloverwogen, zakelijke beslissingen met oog voor middelen, belangen en impact op langere termijn.",
+                behavior: "Weegt rendement en risico's af, neemt data-gedreven beslissingen, denkt in kostenefficiëntie en waarde creatie."
+            },
+            {
+                name: "Energie",
+                definition: "Langdurig actief en doelgericht blijven, ook bij tegenslag.",
+                behavior: "Toont uithoudingsvermogen; blijft enthousiast; gaat door bij weerstand; houdt tempo hoog."
+            },
+            {
+                name: "Flexibel gedrag",
+                definition: "Gedrag aanpassen bij wisselende omstandigheden, problemen of kansen.",
+                behavior: "Wisselt van aanpak als de situatie dat vraagt; probeert andere methoden; staat open voor verandering."
+            },
+            {
+                name: "Groepsgericht leidinggeven",
+                definition: "Sturing geven aan een groep; samenwerking stimuleren om gezamenlijke doelen te bereiken.",
+                behavior: "Formuleert groepsdoelen; motiveert team; bewaakt groepsproces; spreekt team aan op resultaat."
+            },
+            {
+                name: "Impact",
+                definition: "Een vertrouwenwekkende en positieve indruk maken en behouden.",
+                behavior: "Komt zelfverzekerd over; straalt geloofwaardigheid uit; wekt vertrouwen; blijft overeind in discussies."
+            },
+            {
+                name: "Individueel leidinggeven",
+                definition: "Richting en sturing geven aan medewerkers; leiderschapsstijl afstemmen op persoon en situatie.",
+                behavior: "Bespreekt taken duidelijk; geeft feedback; corrigeert en motiveert individueel; past stijl aan per medewerker."
+            },
+            {
+                name: "Initiatief",
+                definition: "Zelf kansen signaleren en erop inspelen zonder af te wachten.",
+                behavior: "Begint uit zichzelf; ziet mogelijkheden; start acties zonder opdracht; neemt verantwoordelijkheid."
+            },
+            {
+                name: "Integriteit",
+                definition: "Handhaven van ethische en sociale normen, ook bij druk of verleiding.",
+                behavior: "Houdt zich aan afspraken; doet wat hij/zij zegt; handelt eerlijk en betrouwbaar."
+            },
+            {
+                name: "Intelligentie (vloeiende)",
+                definition: "Het vermogen om snel verbanden te leggen, abstract te redeneren en nieuwe informatie logisch te verwerken zonder voorafgaande kennis.",
+                behavior: "Denkt analytisch, lost problemen systematisch op, leert snel in complexe situaties."
+            },
+            {
+                name: "Interculturele oriëntatie",
+                definition: "Effectief omgaan met verschillen in culturele achtergronden en gewoonten.",
+                behavior: "Respecteert diversiteit; stemt communicatie af; toont interesse in andere culturen; voorkomt misverstanden."
+            },
+            {
+                name: "Intrinsieke motivatie",
+                definition: "Gedrevenheid om te handelen vanuit eigen waarden, interesses en een gevoel van zingeving – zonder externe prikkels.",
+                behavior: "Zoekt uitdaging en betekenis in werk, toont eigenaarschap en leergierigheid, blijft volhouden zonder directe beloning."
+            },
+            {
+                name: "Inzet",
+                definition: "Hoge eisen stellen aan eigen werk en daar actief naar handelen.",
+                behavior: "Werkt hard en geconcentreerd; zet door bij moeilijkheden; doet meer dan gevraagd wordt."
+            },
+            {
+                name: "Klantgerichtheid",
+                definition: "Achterhalen en begrijpen van klantbehoeften en daarop inspelen met passende oplossingen.",
+                behavior: "Luistert actief; vraagt door naar behoeften; levert maatwerk; borgt klanttevredenheid."
+            },
+            {
+                name: "Kwaliteitsgerichtheid",
+                definition: "Hoge eisen stellen aan kwaliteit en streven naar continue verbetering.",
+                behavior: "Controleert eigen werk; let op details; vraagt feedback; zoekt naar manieren om prestaties te verbeteren."
+            },
+            {
+                name: "Leervermogen",
+                definition: "Nieuwe informatie en ervaringen opnemen en effectief toepassen.",
+                behavior: "Stelt vragen; staat open voor feedback; probeert nieuwe aanpakken uit; leert van fouten."
+            },
+            {
+                name: "Luisteren",
+                definition: "Belangrijke informatie oppikken en doorvragen.",
+                behavior: "Laat anderen uitspreken; stelt verduidelijkende vragen; vat samen; reageert op wat gezegd wordt."
+            },
+            {
+                name: "Marktgerichtheid",
+                definition: "Goed geïnformeerd zijn over markt- en technologische ontwikkelingen en deze kennis benutten.",
+                behavior: "Volgt marktontwikkelingen; vertaalt trends naar kansen; onderzoekt concurrentie; anticipeert op veranderingen."
+            },
+            {
+                name: "Mondelinge communicatie",
+                definition: "Ideeën en informatie duidelijk overbrengen in gesprekken.",
+                behavior: "Gebruikt heldere taal; checkt of boodschap begrepen is; past toon aan gesprekspartner aan."
+            },
+            {
+                name: "Mondelinge presentatie",
+                definition: "Ideeën en informatie helder en overtuigend presenteren voor een groep.",
+                behavior: "Spreekt gestructureerd; gebruikt ondersteunende middelen; houdt aandacht vast; stemt af op publiek."
+            },
+            {
+                name: "Netwerken",
+                definition: "Relaties en netwerken opbouwen, onderhouden en effectief benutten.",
+                behavior: "Legt gemakkelijk contact; onderhoudt relaties; zoekt samenwerking; gebruikt netwerk om doelen te realiseren."
+            },
+            {
+                name: "Omgang met details",
+                definition: "Nauwkeurig en zorgvuldig omgaan met detailinformatie.",
+                behavior: "Controleert gegevens; werkt foutloos; signaleert inconsistenties; let op details zonder overzicht te verliezen."
+            },
+            {
+                name: "Omgevingsbewustzijn",
+                definition: "Inzicht hebben in maatschappelijke, politieke en economische ontwikkelingen en deze benutten.",
+                behavior: "Signaleert trends; vertaalt externe invloeden naar beleid; past strategie aan op omgeving."
+            },
+            {
+                name: "Onafhankelijkheid",
+                definition: "Handelen vanuit eigen overtuiging en koers, ook bij druk van anderen.",
+                behavior: "Vormt eigen mening; neemt beslissingen zonder altijd steun te zoeken; blijft bij standpunt als dat nodig is."
+            },
+            {
+                name: "Onderhandelen",
+                definition: "Effectief bereiken van een win-win oplossing bij belangentegenstellingen.",
+                behavior: "Luistert naar belangen; zoekt gemeenschappelijke grond; stelt compromissen voor; rondt afspraken af."
+            },
+            {
+                name: "Ondernemerschap",
+                definition: "Signaleren van kansen in de markt en risico's nemen om zakelijk voordeel te behalen.",
+                behavior: "Herkent trends en kansen; neemt berekende risico's; zet nieuwe initiatieven op; benut zakelijke mogelijkheden."
+            },
+            {
+                name: "Oordeelsvorming",
+                definition: "Conclusies trekken op basis van beschikbare informatie en alternatieven afwegen.",
+                behavior: "Weegt argumenten en feiten; baseert zich op logica en ervaring; neemt een standpunt in; legt keuzes uit."
+            },
+            {
+                name: "Organisatieloyaliteit",
+                definition: "Handelen in lijn met de cultuur, doelen en prioriteiten van de organisatie.",
+                behavior: "Stelt organisatiedoelen voorop; spreekt positief over de organisatie; toont betrokkenheid."
+            },
+            {
+                name: "Organisatiesensitiviteit",
+                definition: "Gevolgen van beslissingen voor andere onderdelen van de organisatie onderkennen.",
+                behavior: "Herkent belangen van anderen; begrijpt informele verhoudingen; houdt rekening met interne dynamiek."
+            },
+            {
+                name: "Organiseren",
+                definition: "Benodigde mensen en middelen effectief inzetten.",
+                behavior: "Zet de juiste mensen op de juiste plaats; stemt activiteiten af; plant middelen efficiënt."
+            },
+            {
+                name: "Organiseren van eigen werk",
+                definition: "Eigen werkzaamheden effectief plannen en uitvoeren.",
+                behavior: "Stelt prioriteiten; houdt overzicht; werkt gestructureerd; komt afspraken na."
+            },
+            {
+                name: "Overtuigingskracht",
+                definition: "Anderen overtuigen van een standpunt door juiste argumenten en presentatie.",
+                behavior: "Brengt standpunten helder; gebruikt argumenten passend bij doelgroep; wint steun voor ideeën."
+            },
+            {
+                name: "Plannen en organiseren",
+                definition: "Bepalen van doelen en prioriteiten en organiseren van tijd/middelen.",
+                behavior: "Maakt planning; stelt prioriteiten; verdeelt taken logisch; bewaakt deadlines."
+            },
+            {
+                name: "Probleemanalyse",
+                definition: "Signaleren van problemen, verbanden leggen en oorzaken opsporen.",
+                behavior: "Verzamelt relevante informatie; herkent patronen; onderscheidt hoofdzaken van bijzaken; benoemt kern van het probleem."
+            },
+            {
+                name: "Resultaatgerichtheid",
+                definition: "Gericht zijn op het behalen van concrete resultaten en doelstellingen.",
+                behavior: "Stelt meetbare doelen; bewaakt voortgang; grijpt in bij achterstanden; viert behaalde resultaten."
+            },
+            {
+                name: "Samenwerken",
+                definition: "Actief bijdragen aan een gezamenlijk resultaat, ook als dit niet in direct eigen belang is.",
+                behavior: "Werkt constructief mee; deelt informatie; ondersteunt collega's; respecteert afspraken."
+            },
+            {
+                name: "Schriftelijke communicatie",
+                definition: "Informatie duidelijk en gestructureerd op schrift stellen.",
+                behavior: "Schrijft begrijpelijk; gebruikt logische opbouw; beperkt zich tot essentie; stemt schrijfstijl af op doelgroep."
+            },
+            {
+                name: "Sensitiviteit",
+                definition: "Inschatten van gevoelens en behoeften van anderen en daar rekening mee houden.",
+                behavior: "Signaleert non-verbale signalen; toont begrip; speelt in op emoties; respecteert andermans positie."
+            },
+            {
+                name: "Sociabiliteit",
+                definition: "Gemakkelijk contact leggen en onderhouden.",
+                behavior: "Neemt initiatief tot gesprek; mengt zich onder anderen; stelt zich open en benaderbaar op."
+            },
+            {
+                name: "Stressbestendigheid",
+                definition: "Effectief blijven functioneren onder tijdsdruk, teleurstelling of tegenslag.",
+                behavior: "Blijft kalm onder druk; houdt overzicht; reageert beheerst; gaat door ondanks tegenvallers."
+            },
+            {
+                name: "Vasthoudendheid",
+                definition: "Blijven volhouden totdat een doel bereikt is of niet meer haalbaar is.",
+                behavior: "Laat zich niet snel afschrikken; herhaalt acties indien nodig; zoekt alternatieve wegen; blijft gericht op resultaat."
+            },
+            {
+                name: "Verantwoordelijkheid",
+                definition: "Aansprakelijkheid nemen voor gemaakte afspraken en gevolgen van beslissingen.",
+                behavior: "Komt beloftes na; erkent fouten; neemt consequenties; toont eigenaarschap."
+            },
+            {
+                name: "Visie en strategisch denken",
+                definition: "Vormt een inspirerend beeld van de toekomst. Ziet lange termijn-ontwikkelingen en anticipeert daarop met het formuleren van langetermijndoelen.",
+                behavior: "Denkt toekomstgericht en plaatst gebeurtenissen in groter geheel. Ontwikkelt scenario's en inspireert met richting. Verbindt trends met strategie, ontwikkelt koers, maakt keuzes op basis van langetermijn-impact."
+            },
+            {
+                name: "Visie uitdragen",
+                definition: "Anderen inspireren en richting geven met een toekomstbeeld.",
+                behavior: "Vertelt helder waar de organisatie naartoe gaat; koppelt visie aan dagelijkse praktijk; motiveert anderen."
+            },
+            {
+                name: "Voortgangsbewaking",
+                definition: "Procedures opstellen en bewaken om voortgang te monitoren.",
+                behavior: "Houdt overzicht; signaleert afwijkingen; grijpt tijdig in; rapporteert voortgang."
+            },
+            {
+                name: "Zelfbeheersing",
+                definition: "Gevoelens beheersen om effectief te blijven in situaties van spanning of emotie.",
+                behavior: "Blijft kalm bij conflicten; reageert niet impulsief; bewaart professionaliteit; houdt emoties onder controle."
+            },
+            {
+                name: "Zelfeffectiviteit",
+                definition: "Geloof in het eigen vermogen om gewenste prestaties te leveren in specifieke situaties.",
+                behavior: "Neemt verantwoordelijkheid, gelooft dat inspanning loont, toont zelfvertrouwen bij nieuwe taken."
+            },
+            {
+                name: "Zelfontwikkeling",
+                definition: "Gericht zijn op het ontwikkelen van eigen kennis en vaardigheden.",
+                behavior: "Vraagt feedback; volgt trainingen; experimenteert met nieuw gedrag; leert van ervaringen."
+            }
+        ];
+
+        // State
+        let currentQuestionIndex = 0;
+        let questionGroups = [];
+        let selections = {}; // questionIndex -> array of selected quality indices
+        let finalRanking = [];
+
+        // Initialize question groups (groups of 6 qualities each)
+        function initializeGroups() {
+            const shuffled = [...qualities].map((q, i) => ({ ...q, originalIndex: i }));
+            // Shuffle for variety
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+
+            questionGroups = [];
+            for (let i = 0; i < shuffled.length; i += 6) {
+                questionGroups.push(shuffled.slice(i, i + 6));
+            }
+        }
+
+        function startAssessment() {
+            initializeGroups();
+            selections = {};
+            currentQuestionIndex = 0;
+
+            document.getElementById('introScreen').classList.remove('active');
+            document.getElementById('questionScreen').classList.add('active');
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('progressText').style.display = 'block';
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const group = questionGroups[currentQuestionIndex];
+            const container = document.getElementById('qualityOptions');
+            container.innerHTML = '';
+
+            const currentSelections = selections[currentQuestionIndex] || [];
+
+            group.forEach((quality, index) => {
+                const option = document.createElement('div');
+                option.className = 'quality-option' + (currentSelections.includes(index) ? ' selected' : '');
+                option.innerHTML = `
+                    <div class="quality-name">${quality.name}</div>
+                    <div class="quality-desc">${quality.definition}</div>
+                `;
+                option.onclick = () => toggleSelection(index);
+                container.appendChild(option);
+            });
+
+            updateProgress();
+            updateSelectionCounter();
+            updateNavButtons();
+        }
+
+        function toggleSelection(index) {
+            if (!selections[currentQuestionIndex]) {
+                selections[currentQuestionIndex] = [];
+            }
+
+            const arr = selections[currentQuestionIndex];
+            const pos = arr.indexOf(index);
+
+            if (pos > -1) {
+                arr.splice(pos, 1);
+            } else if (arr.length < 3) {
+                arr.push(index);
+            } else {
+                showToast('Je kunt maximaal 3 kwaliteiten per groep selecteren');
+                return;
+            }
+
+            renderQuestion();
+        }
+
+        function updateSelectionCounter() {
+            const count = (selections[currentQuestionIndex] || []).length;
+            document.getElementById('selectionCount').textContent = count;
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questionGroups.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent =
+                `Vraag ${currentQuestionIndex + 1} van ${questionGroups.length}`;
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').style.visibility =
+                currentQuestionIndex === 0 ? 'hidden' : 'visible';
+
+            const isLast = currentQuestionIndex === questionGroups.length - 1;
+            document.getElementById('nextBtn').textContent = isLast ? 'Naar rangschikking' : 'Volgende';
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            const currentSelections = selections[currentQuestionIndex] || [];
+
+            if (currentSelections.length === 0) {
+                showToast('Selecteer minimaal 1 kwaliteit om verder te gaan');
+                return;
+            }
+
+            if (currentQuestionIndex < questionGroups.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                // Move to ranking
+                showRankingScreen();
+            }
+        }
+
+        function showRankingScreen() {
+            // Collect all selected qualities
+            const selectedQualities = [];
+
+            for (let i = 0; i < questionGroups.length; i++) {
+                const group = questionGroups[i];
+                const groupSelections = selections[i] || [];
+
+                groupSelections.forEach(idx => {
+                    selectedQualities.push(group[idx]);
+                });
+            }
+
+            if (selectedQualities.length < 5) {
+                showToast('Je hebt te weinig kwaliteiten geselecteerd. Selecteer meer kwaliteiten.');
+                return;
+            }
+
+            // Take top selections (max 10 for ranking)
+            finalRanking = selectedQualities.slice(0, Math.min(selectedQualities.length, 10));
+
+            document.getElementById('questionScreen').classList.remove('active');
+            document.getElementById('rankingScreen').classList.add('active');
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('progressText').style.display = 'none';
+
+            renderRanking();
+        }
+
+        function renderRanking() {
+            const container = document.getElementById('rankingList');
+            container.innerHTML = '';
+
+            finalRanking.forEach((quality, index) => {
+                const item = document.createElement('div');
+                item.className = 'ranking-item';
+                item.draggable = true;
+                item.dataset.index = index;
+                item.innerHTML = `
+                    <div class="rank-number">${index + 1}</div>
+                    <div class="ranking-content">
+                        <div class="quality-name">${quality.name}</div>
+                        <div class="quality-desc">${quality.definition}</div>
+                    </div>
+                    <div class="drag-handle">⋮⋮</div>
+                `;
+
+                // Drag events
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('dragover', handleDragOver);
+                item.addEventListener('drop', handleDrop);
+
+                // Touch events for mobile
+                item.addEventListener('touchstart', handleTouchStart, { passive: false });
+                item.addEventListener('touchmove', handleTouchMove, { passive: false });
+                item.addEventListener('touchend', handleTouchEnd);
+
+                container.appendChild(item);
+            });
+        }
+
+        // Drag and Drop handlers
+        let draggedItem = null;
+        let draggedIndex = null;
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            draggedIndex = parseInt(this.dataset.index);
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            draggedItem = null;
+            draggedIndex = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            if (this === draggedItem) return;
+
+            const dropIndex = parseInt(this.dataset.index);
+
+            // Reorder the array
+            const item = finalRanking.splice(draggedIndex, 1)[0];
+            finalRanking.splice(dropIndex, 0, item);
+
+            renderRanking();
+        }
+
+        // Touch handlers for mobile drag and drop
+        let touchStartY = 0;
+        let touchedItem = null;
+        let touchedClone = null;
+
+        function handleTouchStart(e) {
+            touchedItem = this;
+            touchStartY = e.touches[0].clientY;
+
+            // Create a visual clone
+            const rect = this.getBoundingClientRect();
+            touchedClone = this.cloneNode(true);
+            touchedClone.style.position = 'fixed';
+            touchedClone.style.left = rect.left + 'px';
+            touchedClone.style.top = rect.top + 'px';
+            touchedClone.style.width = rect.width + 'px';
+            touchedClone.style.zIndex = '1000';
+            touchedClone.style.opacity = '0.9';
+            touchedClone.style.pointerEvents = 'none';
+            touchedClone.classList.add('dragging');
+
+            this.style.opacity = '0.3';
+        }
+
+        function handleTouchMove(e) {
+            if (!touchedItem) return;
+            e.preventDefault();
+
+            const touch = e.touches[0];
+
+            if (!touchedClone.parentNode) {
+                document.body.appendChild(touchedClone);
+            }
+
+            touchedClone.style.top = (touch.clientY - 30) + 'px';
+
+            // Find element under touch
+            touchedClone.style.display = 'none';
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            touchedClone.style.display = '';
+
+            if (elementBelow) {
+                const rankingItem = elementBelow.closest('.ranking-item');
+                if (rankingItem && rankingItem !== touchedItem) {
+                    const container = document.getElementById('rankingList');
+                    const items = [...container.querySelectorAll('.ranking-item')];
+                    const fromIndex = items.indexOf(touchedItem);
+                    const toIndex = items.indexOf(rankingItem);
+
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        // Visual reorder
+                        if (fromIndex < toIndex) {
+                            rankingItem.after(touchedItem);
+                        } else {
+                            rankingItem.before(touchedItem);
+                        }
+                    }
+                }
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (!touchedItem) return;
+
+            touchedItem.style.opacity = '';
+
+            if (touchedClone && touchedClone.parentNode) {
+                touchedClone.parentNode.removeChild(touchedClone);
+            }
+
+            // Update finalRanking based on new DOM order
+            const container = document.getElementById('rankingList');
+            const items = [...container.querySelectorAll('.ranking-item')];
+            const newRanking = items.map(item => {
+                const name = item.querySelector('.quality-name').textContent;
+                return finalRanking.find(q => q.name === name);
+            });
+
+            finalRanking = newRanking;
+            renderRanking();
+
+            touchedItem = null;
+            touchedClone = null;
+        }
+
+        function backToQuestions() {
+            document.getElementById('rankingScreen').classList.remove('active');
+            document.getElementById('questionScreen').classList.add('active');
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('progressText').style.display = 'block';
+            renderQuestion();
+        }
+
+        function showResults() {
+            document.getElementById('rankingScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '';
+
+            // Show top 5
+            const top5 = finalRanking.slice(0, 5);
+
+            top5.forEach((quality, index) => {
+                const card = document.createElement('div');
+                card.className = `result-card rank-${index + 1}`;
+                card.innerHTML = `
+                    <div class="result-rank">${index + 1}</div>
+                    <div class="result-name">${quality.name}</div>
+                    <div class="result-definition">${quality.definition}</div>
+                    <div class="result-behavior">
+                        <span class="result-behavior-label">Gedrag:</span>
+                        ${quality.behavior}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function copyResults() {
+            const top5 = finalRanking.slice(0, 5);
+            let text = "Mijn Top 5 Kwaliteiten\n";
+            text += "========================\n\n";
+
+            top5.forEach((quality, index) => {
+                text += `${index + 1}. ${quality.name}\n`;
+                text += `   ${quality.definition}\n`;
+                text += `   Gedrag: ${quality.behavior}\n\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Resultaten gekopieerd naar klembord!');
+            }).catch(() => {
+                showToast('Kon niet kopiëren. Probeer handmatig te selecteren.');
+            });
+        }
+
+        function downloadResults() {
+            const top5 = finalRanking.slice(0, 5);
+
+            // Create a simple HTML for printing/PDF
+            const printContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Mijn Top 5 Kwaliteiten</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                        h1 { color: #4F46E5; border-bottom: 2px solid #4F46E5; padding-bottom: 10px; }
+                        .quality { margin: 25px 0; padding: 20px; border-left: 4px solid #4F46E5; background: #f8f9fa; }
+                        .quality h3 { margin: 0 0 10px 0; color: #333; }
+                        .definition { font-style: italic; color: #555; margin-bottom: 10px; }
+                        .behavior { color: #666; }
+                        .rank { display: inline-block; width: 30px; height: 30px; background: #4F46E5; color: white; text-align: center; line-height: 30px; border-radius: 50%; margin-right: 10px; }
+                        .quality:nth-child(2) { border-left-color: #FFD700; }
+                        .quality:nth-child(2) .rank { background: #FFD700; color: #333; }
+                        .quality:nth-child(3) { border-left-color: #C0C0C0; }
+                        .quality:nth-child(3) .rank { background: #C0C0C0; color: #333; }
+                        .quality:nth-child(4) { border-left-color: #CD7F32; }
+                        .quality:nth-child(4) .rank { background: #CD7F32; }
+                        .date { color: #888; font-size: 12px; margin-top: 40px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Mijn Top 5 Kwaliteiten</h1>
+                    ${top5.map((q, i) => `
+                        <div class="quality">
+                            <h3><span class="rank">${i + 1}</span>${q.name}</h3>
+                            <p class="definition">${q.definition}</p>
+                            <p class="behavior"><strong>Gedrag:</strong> ${q.behavior}</p>
+                        </div>
+                    `).join('')}
+                    <p class="date">Gegenereerd op: ${new Date().toLocaleDateString('nl-NL')}</p>
+                </body>
+                </html>
+            `;
+
+            // Open in new window for printing
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+
+            showToast('PDF venster geopend - gebruik Ctrl/Cmd+P om te printen als PDF');
+        }
+
+        function restartAssessment() {
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.add('active');
+            selections = {};
+            finalRanking = [];
+            currentQuestionIndex = 0;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
