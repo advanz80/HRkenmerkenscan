@@ -17,6 +17,7 @@
             --primary-dark: #3730A3;
             --secondary: #10B981;
             --accent: #F59E0B;
+            --danger: #EF4444;
             --bg: #F8FAFC;
             --card-bg: #FFFFFF;
             --text: #1E293B;
@@ -41,7 +42,6 @@
             min-height: 100vh;
         }
 
-        /* Header */
         .header {
             text-align: center;
             padding: 16px 0;
@@ -75,7 +75,6 @@
             margin-bottom: 16px;
         }
 
-        /* Screens */
         .screen {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -90,7 +89,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Cards */
         .card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -109,7 +107,6 @@
             margin-bottom: 16px;
         }
 
-        /* Intro */
         .intro-card {
             text-align: center;
         }
@@ -154,7 +151,6 @@
             margin: 0;
         }
 
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -181,8 +177,10 @@
             box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
         }
 
-        .btn-primary:active {
-            transform: translateY(0);
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn-secondary {
@@ -203,12 +201,12 @@
             border-radius: 12px;
         }
 
-        /* Statement Card */
-        .statement-card {
+        /* Question Card */
+        .question-card {
             padding: 24px;
         }
 
-        .statement-number {
+        .question-number {
             display: inline-block;
             background: var(--primary);
             color: white;
@@ -219,76 +217,160 @@
             margin-bottom: 16px;
         }
 
-        .statement-text {
-            font-size: 1.15rem;
-            line-height: 1.7;
+        .question-instruction {
+            font-size: 1.1rem;
             color: var(--text);
-            margin-bottom: 28px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
-        /* Likert Scale */
-        .likert-scale {
+        .question-subtext {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .phase-indicator {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .phase-dot {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+        }
+
+        .phase-dot.active {
+            background: var(--primary);
+        }
+
+        .phase-dot.completed {
+            background: var(--secondary);
+        }
+
+        /* Statement Options */
+        .statement-options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .likert-option {
+        .statement-option {
             display: flex;
-            align-items: center;
-            padding: 14px 18px;
+            align-items: flex-start;
+            padding: 16px;
             background: var(--bg);
             border: 2px solid transparent;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
+            text-align: left;
         }
 
-        .likert-option:hover {
+        .statement-option:hover {
             border-color: var(--primary-light);
             background: white;
         }
 
-        .likert-option.selected {
-            border-color: var(--primary);
-            background: rgba(79, 70, 229, 0.08);
+        .statement-option.selected-most {
+            border-color: var(--secondary);
+            background: rgba(16, 185, 129, 0.08);
         }
 
-        .likert-radio {
-            width: 24px;
-            height: 24px;
+        .statement-option.selected-least {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .statement-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .statement-marker {
+            width: 28px;
+            height: 28px;
             border: 2px solid var(--border);
-            border-radius: 50%;
+            border-radius: 8px;
             margin-right: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            font-weight: 700;
+            font-size: 0.75rem;
             transition: all 0.2s ease;
         }
 
-        .likert-option.selected .likert-radio {
-            border-color: var(--primary);
-            background: var(--primary);
+        .statement-option.selected-most .statement-marker {
+            border-color: var(--secondary);
+            background: var(--secondary);
+            color: white;
         }
 
-        .likert-option.selected .likert-radio::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
+        .statement-option.selected-least .statement-marker {
+            border-color: var(--danger);
+            background: var(--danger);
+            color: white;
         }
 
-        .likert-label {
+        .statement-text {
             font-size: 0.95rem;
             color: var(--text);
+            line-height: 1.5;
         }
 
-        .likert-option.selected .likert-label {
-            color: var(--primary);
+        .statement-option.selected-most .statement-text {
+            color: var(--secondary);
             font-weight: 500;
+        }
+
+        .statement-option.selected-least .statement-text {
+            color: var(--danger);
+            font-weight: 500;
+        }
+
+        .selection-status {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg);
+            border-radius: 12px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+        }
+
+        .status-dot.most {
+            background: var(--secondary);
+        }
+
+        .status-dot.least {
+            background: var(--danger);
+        }
+
+        .status-label {
+            color: var(--text-light);
+        }
+
+        .status-value {
+            font-weight: 600;
+            color: var(--text);
         }
 
         /* Navigation */
@@ -528,16 +610,16 @@
                 font-size: 1.4rem;
             }
 
+            .statement-option {
+                padding: 14px;
+            }
+
             .statement-text {
-                font-size: 1.05rem;
+                font-size: 0.9rem;
             }
 
             .btn {
                 padding: 14px 24px;
-            }
-
-            .likert-option {
-                padding: 12px 14px;
             }
 
             .result-header {
@@ -548,9 +630,13 @@
                 margin-left: 50px;
                 margin-top: -8px;
             }
+
+            .selection-status {
+                flex-direction: column;
+                gap: 12px;
+            }
         }
 
-        /* Animations */
         .fade-slide-in {
             animation: fadeSlideIn 0.5s ease forwards;
         }
@@ -573,7 +659,7 @@
         @keyframes scaleIn {
             from {
                 opacity: 0;
-                transform: scale(0.9);
+                transform: scale(0.95);
             }
             to {
                 opacity: 1;
@@ -597,21 +683,21 @@
         <div class="screen active" id="introScreen">
             <div class="card intro-card">
                 <h2>Ontdek Je Top 5 Kwaliteiten</h2>
-                <p>Deze assessment helpt je inzicht te krijgen in je sterkste professionele kwaliteiten door middel van praktijkgerichte stellingen.</p>
+                <p>Deze assessment helpt je inzicht te krijgen in je sterkste professionele kwaliteiten door middel van vergelijkende keuzes.</p>
 
                 <div class="intro-features">
                     <div class="feature">
                         <div class="feature-icon">1</div>
                         <div class="feature-text">
-                            <h4>Beantwoord stellingen</h4>
-                            <p>Je krijgt 60 stellingen over werkgedrag. Geef aan in hoeverre ze bij jou passen.</p>
+                            <h4>Vergelijk stellingen</h4>
+                            <p>Je krijgt steeds 4 stellingen te zien. Kies welke het <strong>meest</strong> en welke het <strong>minst</strong> bij jou past.</p>
                         </div>
                     </div>
                     <div class="feature">
                         <div class="feature-icon">2</div>
                         <div class="feature-text">
-                            <h4>Automatische analyse</h4>
-                            <p>Op basis van je antwoorden berekenen we welke kwaliteiten het sterkst naar voren komen.</p>
+                            <h4>Geforceerde keuze</h4>
+                            <p>Door te kiezen ontstaat een eerlijk beeld - je kunt niet overal hoog op scoren.</p>
                         </div>
                     </div>
                     <div class="feature">
@@ -624,7 +710,7 @@
                 </div>
 
                 <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 24px;">
-                    Tip: Beantwoord de vragen vanuit hoe je daadwerkelijk bent, niet hoe je zou willen zijn.
+                    Tip: Kies vanuit hoe je daadwerkelijk bent, niet hoe je zou willen zijn.
                 </p>
 
                 <button class="btn btn-primary" onclick="startAssessment()">
@@ -635,39 +721,40 @@
 
         <!-- Question Screen -->
         <div class="screen" id="questionScreen">
-            <div class="card statement-card">
-                <div class="statement-number" id="statementNumber">Stelling 1 van 60</div>
-                <p class="statement-text" id="statementText"></p>
+            <div class="card question-card">
+                <div class="question-number" id="questionNumber">Vraag 1 van 20</div>
 
-                <div class="likert-scale" id="likertScale">
-                    <div class="likert-option" data-value="5" onclick="selectAnswer(5)">
-                        <div class="likert-radio"></div>
-                        <span class="likert-label">Helemaal mee eens - Dit ben ik helemaal</span>
+                <div class="phase-indicator">
+                    <div class="phase-dot" id="phase1"></div>
+                    <div class="phase-dot" id="phase2"></div>
+                </div>
+
+                <p class="question-instruction" id="questionInstruction">Welke stelling past het MEEST bij jou?</p>
+                <p class="question-subtext" id="questionSubtext">Klik op de stelling die jou het beste omschrijft</p>
+
+                <div class="statement-options" id="statementOptions">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <div class="selection-status">
+                    <div class="status-item">
+                        <div class="status-dot most"></div>
+                        <span class="status-label">Meest:</span>
+                        <span class="status-value" id="mostStatus">-</span>
                     </div>
-                    <div class="likert-option" data-value="4" onclick="selectAnswer(4)">
-                        <div class="likert-radio"></div>
-                        <span class="likert-label">Mee eens - Dit herken ik bij mezelf</span>
-                    </div>
-                    <div class="likert-option" data-value="3" onclick="selectAnswer(3)">
-                        <div class="likert-radio"></div>
-                        <span class="likert-label">Neutraal - Soms wel, soms niet</span>
-                    </div>
-                    <div class="likert-option" data-value="2" onclick="selectAnswer(2)">
-                        <div class="likert-radio"></div>
-                        <span class="likert-label">Niet mee eens - Dit past minder bij mij</span>
-                    </div>
-                    <div class="likert-option" data-value="1" onclick="selectAnswer(1)">
-                        <div class="likert-radio"></div>
-                        <span class="likert-label">Helemaal niet mee eens - Dit ben ik niet</span>
+                    <div class="status-item">
+                        <div class="status-dot least"></div>
+                        <span class="status-label">Minst:</span>
+                        <span class="status-value" id="leastStatus">-</span>
                     </div>
                 </div>
             </div>
 
             <div class="nav-buttons">
-                <button class="btn btn-secondary btn-icon" id="prevBtn" onclick="previousStatement()" title="Vorige">
+                <button class="btn btn-secondary btn-icon" id="prevBtn" onclick="previousQuestion()" title="Vorige">
                     ←
                 </button>
-                <button class="btn btn-primary" id="nextBtn" onclick="nextStatement()">
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>
                     Volgende
                 </button>
             </div>
@@ -678,20 +765,20 @@
             <div class="card processing-card">
                 <div class="spinner-large"></div>
                 <h2>Je resultaten worden berekend</h2>
-                <p>Even geduld terwijl we je antwoorden analyseren...</p>
+                <p>Even geduld terwijl we je keuzes analyseren...</p>
 
                 <div class="processing-steps">
                     <div class="processing-step" id="step1">
                         <div class="step-icon">1</div>
-                        <span>Antwoorden verzamelen</span>
+                        <span>Keuzes verzamelen</span>
                     </div>
                     <div class="processing-step" id="step2">
                         <div class="step-icon">2</div>
-                        <span>Kwaliteiten analyseren</span>
+                        <span>Patronen analyseren</span>
                     </div>
                     <div class="processing-step" id="step3">
                         <div class="step-icon">3</div>
-                        <span>Top 5 bepalen</span>
+                        <span>Kwaliteiten rangschikken</span>
                     </div>
                     <div class="processing-step" id="step4">
                         <div class="step-icon">4</div>
@@ -705,7 +792,7 @@
         <div class="screen" id="resultsScreen">
             <div class="results-header">
                 <h2>Jouw Top 5 Kwaliteiten</h2>
-                <p style="color: var(--text-light);">Op basis van je antwoorden komen deze kwaliteiten het sterkst naar voren.</p>
+                <p style="color: var(--text-light);">Op basis van je keuzes komen deze kwaliteiten het sterkst naar voren.</p>
             </div>
 
             <div id="resultsContainer">
@@ -747,7 +834,7 @@
             },
             "Besluitvaardigheid": {
                 definition: "Beslissingen nemen of oordelen uitspreken, ook bij onzekerheid.",
-                behavior: "Neemt tijdig besluiten; durft knopen door te hakken; accepteert consequenties; blijft bij genomen beslissingen."
+                behavior: "Neemt tijdig besluiten; durft knopen door te hakken; accepteert consequenties."
             },
             "Coachen": {
                 definition: "Medewerkers begeleiden in hun ontwikkeling.",
@@ -757,17 +844,13 @@
                 definition: "Problemen en situaties in een breder kader plaatsen.",
                 behavior: "Legt verbanden; denkt abstract; ontwikkelt modellen en schema's; ziet grote lijnen."
             },
-            "Contracteren": {
-                definition: "Toewerken naar het afsluiten van bindende afspraken of overeenkomsten.",
-                behavior: "Maakt duidelijke afspraken; legt afspraken schriftelijk vast; zorgt voor commitment bij partijen."
-            },
             "Creativiteit": {
                 definition: "Met originele oplossingen en ideeën komen.",
-                behavior: "Bedenkt nieuwe invalshoeken; ziet mogelijkheden; denkt 'out of the box'; stelt verbeteringen voor."
+                behavior: "Bedenkt nieuwe invalshoeken; ziet mogelijkheden; denkt 'out of the box'."
             },
             "Delegeren": {
                 definition: "Taken en verantwoordelijkheden toewijzen en benutten van capaciteiten van medewerkers.",
-                behavior: "Geeft verantwoordelijkheid; legt verwachtingen uit; vertrouwt taken toe; volgt voortgang op afstand."
+                behavior: "Geeft verantwoordelijkheid; legt verwachtingen uit; vertrouwt taken toe."
             },
             "Discipline": {
                 definition: "Volgen van beleid, procedures en richtlijnen.",
@@ -777,359 +860,509 @@
                 definition: "Risico's durven nemen om kansen te benutten.",
                 behavior: "Neemt beslissingen ondanks onzekerheid; spreekt zich uit; gaat nieuwe uitdagingen aan."
             },
-            "Economische besluitvaardigheid": {
-                definition: "Neemt weloverwogen, zakelijke beslissingen met oog voor middelen, belangen en impact op langere termijn.",
-                behavior: "Weegt rendement en risico's af, neemt data-gedreven beslissingen, denkt in kostenefficiëntie en waarde creatie."
-            },
             "Energie": {
                 definition: "Langdurig actief en doelgericht blijven, ook bij tegenslag.",
-                behavior: "Toont uithoudingsvermogen; blijft enthousiast; gaat door bij weerstand; houdt tempo hoog."
+                behavior: "Toont uithoudingsvermogen; blijft enthousiast; gaat door bij weerstand."
             },
-            "Flexibel gedrag": {
+            "Flexibiliteit": {
                 definition: "Gedrag aanpassen bij wisselende omstandigheden, problemen of kansen.",
-                behavior: "Wisselt van aanpak als de situatie dat vraagt; probeert andere methoden; staat open voor verandering."
+                behavior: "Wisselt van aanpak als de situatie dat vraagt; probeert andere methoden."
             },
-            "Groepsgericht leidinggeven": {
-                definition: "Sturing geven aan een groep; samenwerking stimuleren om gezamenlijke doelen te bereiken.",
-                behavior: "Formuleert groepsdoelen; motiveert team; bewaakt groepsproces; spreekt team aan op resultaat."
+            "Groepsgericht leiderschap": {
+                definition: "Sturing geven aan een groep; samenwerking stimuleren om doelen te bereiken.",
+                behavior: "Formuleert groepsdoelen; motiveert team; bewaakt groepsproces."
             },
             "Impact": {
                 definition: "Een vertrouwenwekkende en positieve indruk maken en behouden.",
-                behavior: "Komt zelfverzekerd over; straalt geloofwaardigheid uit; wekt vertrouwen; blijft overeind in discussies."
-            },
-            "Individueel leidinggeven": {
-                definition: "Richting en sturing geven aan medewerkers; leiderschapsstijl afstemmen op persoon en situatie.",
-                behavior: "Bespreekt taken duidelijk; geeft feedback; corrigeert en motiveert individueel; past stijl aan per medewerker."
+                behavior: "Komt zelfverzekerd over; straalt geloofwaardigheid uit; wekt vertrouwen."
             },
             "Initiatief": {
                 definition: "Zelf kansen signaleren en erop inspelen zonder af te wachten.",
-                behavior: "Begint uit zichzelf; ziet mogelijkheden; start acties zonder opdracht; neemt verantwoordelijkheid."
+                behavior: "Begint uit zichzelf; ziet mogelijkheden; start acties zonder opdracht."
             },
             "Integriteit": {
                 definition: "Handhaven van ethische en sociale normen, ook bij druk of verleiding.",
-                behavior: "Houdt zich aan afspraken; doet wat hij/zij zegt; handelt eerlijk en betrouwbaar."
+                behavior: "Houdt zich aan afspraken; doet wat hij/zij zegt; handelt eerlijk."
             },
-            "Intelligentie (vloeiende)": {
-                definition: "Het vermogen om snel verbanden te leggen, abstract te redeneren en nieuwe informatie logisch te verwerken.",
-                behavior: "Denkt analytisch, lost problemen systematisch op, leert snel in complexe situaties."
-            },
-            "Interculturele oriëntatie": {
-                definition: "Effectief omgaan met verschillen in culturele achtergronden en gewoonten.",
-                behavior: "Respecteert diversiteit; stemt communicatie af; toont interesse in andere culturen; voorkomt misverstanden."
-            },
-            "Intrinsieke motivatie": {
-                definition: "Gedrevenheid om te handelen vanuit eigen waarden, interesses en zingeving.",
-                behavior: "Zoekt uitdaging en betekenis in werk, toont eigenaarschap en leergierigheid, blijft volhouden zonder directe beloning."
-            },
-            "Inzet": {
-                definition: "Hoge eisen stellen aan eigen werk en daar actief naar handelen.",
-                behavior: "Werkt hard en geconcentreerd; zet door bij moeilijkheden; doet meer dan gevraagd wordt."
+            "Analytisch vermogen": {
+                definition: "Het vermogen om snel verbanden te leggen en nieuwe informatie logisch te verwerken.",
+                behavior: "Denkt analytisch, lost problemen systematisch op, leert snel."
             },
             "Klantgerichtheid": {
-                definition: "Achterhalen en begrijpen van klantbehoeften en daarop inspelen met passende oplossingen.",
-                behavior: "Luistert actief; vraagt door naar behoeften; levert maatwerk; borgt klanttevredenheid."
+                definition: "Achterhalen en begrijpen van klantbehoeften en daarop inspelen.",
+                behavior: "Luistert actief; vraagt door naar behoeften; levert maatwerk."
             },
             "Kwaliteitsgerichtheid": {
                 definition: "Hoge eisen stellen aan kwaliteit en streven naar continue verbetering.",
-                behavior: "Controleert eigen werk; let op details; vraagt feedback; zoekt naar manieren om prestaties te verbeteren."
+                behavior: "Controleert eigen werk; let op details; zoekt naar verbetering."
             },
             "Leervermogen": {
                 definition: "Nieuwe informatie en ervaringen opnemen en effectief toepassen.",
-                behavior: "Stelt vragen; staat open voor feedback; probeert nieuwe aanpakken uit; leert van fouten."
+                behavior: "Stelt vragen; staat open voor feedback; leert van fouten."
             },
             "Luisteren": {
                 definition: "Belangrijke informatie oppikken en doorvragen.",
-                behavior: "Laat anderen uitspreken; stelt verduidelijkende vragen; vat samen; reageert op wat gezegd wordt."
-            },
-            "Marktgerichtheid": {
-                definition: "Goed geïnformeerd zijn over markt- en technologische ontwikkelingen en deze kennis benutten.",
-                behavior: "Volgt marktontwikkelingen; vertaalt trends naar kansen; onderzoekt concurrentie; anticipeert op veranderingen."
+                behavior: "Laat anderen uitspreken; stelt verduidelijkende vragen; vat samen."
             },
             "Mondelinge communicatie": {
                 definition: "Ideeën en informatie duidelijk overbrengen in gesprekken.",
-                behavior: "Gebruikt heldere taal; checkt of boodschap begrepen is; past toon aan gesprekspartner aan."
-            },
-            "Mondelinge presentatie": {
-                definition: "Ideeën en informatie helder en overtuigend presenteren voor een groep.",
-                behavior: "Spreekt gestructureerd; gebruikt ondersteunende middelen; houdt aandacht vast; stemt af op publiek."
+                behavior: "Gebruikt heldere taal; checkt of boodschap begrepen is."
             },
             "Netwerken": {
                 definition: "Relaties en netwerken opbouwen, onderhouden en effectief benutten.",
-                behavior: "Legt gemakkelijk contact; onderhoudt relaties; zoekt samenwerking; gebruikt netwerk om doelen te realiseren."
+                behavior: "Legt gemakkelijk contact; onderhoudt relaties; zoekt samenwerking."
             },
-            "Omgang met details": {
+            "Nauwkeurigheid": {
                 definition: "Nauwkeurig en zorgvuldig omgaan met detailinformatie.",
-                behavior: "Controleert gegevens; werkt foutloos; signaleert inconsistenties; let op details zonder overzicht te verliezen."
-            },
-            "Omgevingsbewustzijn": {
-                definition: "Inzicht hebben in maatschappelijke, politieke en economische ontwikkelingen en deze benutten.",
-                behavior: "Signaleert trends; vertaalt externe invloeden naar beleid; past strategie aan op omgeving."
+                behavior: "Controleert gegevens; werkt foutloos; signaleert inconsistenties."
             },
             "Onafhankelijkheid": {
-                definition: "Handelen vanuit eigen overtuiging en koers, ook bij druk van anderen.",
-                behavior: "Vormt eigen mening; neemt beslissingen zonder altijd steun te zoeken; blijft bij standpunt als dat nodig is."
+                definition: "Handelen vanuit eigen overtuiging, ook bij druk van anderen.",
+                behavior: "Vormt eigen mening; neemt beslissingen zonder steun; blijft bij standpunt."
             },
             "Onderhandelen": {
                 definition: "Effectief bereiken van een win-win oplossing bij belangentegenstellingen.",
-                behavior: "Luistert naar belangen; zoekt gemeenschappelijke grond; stelt compromissen voor; rondt afspraken af."
+                behavior: "Luistert naar belangen; zoekt gemeenschappelijke grond."
             },
             "Ondernemerschap": {
-                definition: "Signaleren van kansen in de markt en risico's nemen om zakelijk voordeel te behalen.",
-                behavior: "Herkent trends en kansen; neemt berekende risico's; zet nieuwe initiatieven op; benut zakelijke mogelijkheden."
+                definition: "Signaleren van kansen en risico's nemen om zakelijk voordeel te behalen.",
+                behavior: "Herkent trends en kansen; neemt berekende risico's."
             },
             "Oordeelsvorming": {
-                definition: "Conclusies trekken op basis van beschikbare informatie en alternatieven afwegen.",
-                behavior: "Weegt argumenten en feiten; baseert zich op logica en ervaring; neemt een standpunt in; legt keuzes uit."
-            },
-            "Organisatieloyaliteit": {
-                definition: "Handelen in lijn met de cultuur, doelen en prioriteiten van de organisatie.",
-                behavior: "Stelt organisatiedoelen voorop; spreekt positief over de organisatie; toont betrokkenheid."
+                definition: "Conclusies trekken op basis van beschikbare informatie.",
+                behavior: "Weegt argumenten en feiten; baseert zich op logica en ervaring."
             },
             "Organisatiesensitiviteit": {
-                definition: "Gevolgen van beslissingen voor andere onderdelen van de organisatie onderkennen.",
-                behavior: "Herkent belangen van anderen; begrijpt informele verhoudingen; houdt rekening met interne dynamiek."
+                definition: "Gevolgen van beslissingen voor andere onderdelen onderkennen.",
+                behavior: "Herkent belangen van anderen; begrijpt informele verhoudingen."
             },
-            "Organiseren": {
-                definition: "Benodigde mensen en middelen effectief inzetten.",
-                behavior: "Zet de juiste mensen op de juiste plaats; stemt activiteiten af; plant middelen efficiënt."
-            },
-            "Organiseren van eigen werk": {
-                definition: "Eigen werkzaamheden effectief plannen en uitvoeren.",
-                behavior: "Stelt prioriteiten; houdt overzicht; werkt gestructureerd; komt afspraken na."
-            },
-            "Overtuigingskracht": {
-                definition: "Anderen overtuigen van een standpunt door juiste argumenten en presentatie.",
-                behavior: "Brengt standpunten helder; gebruikt argumenten passend bij doelgroep; wint steun voor ideeën."
-            },
-            "Plannen en organiseren": {
+            "Plannen": {
                 definition: "Bepalen van doelen en prioriteiten en organiseren van tijd/middelen.",
-                behavior: "Maakt planning; stelt prioriteiten; verdeelt taken logisch; bewaakt deadlines."
+                behavior: "Maakt planning; stelt prioriteiten; verdeelt taken logisch."
             },
             "Probleemanalyse": {
                 definition: "Signaleren van problemen, verbanden leggen en oorzaken opsporen.",
-                behavior: "Verzamelt relevante informatie; herkent patronen; onderscheidt hoofdzaken van bijzaken; benoemt kern van het probleem."
+                behavior: "Verzamelt relevante informatie; herkent patronen; benoemt kern."
             },
             "Resultaatgerichtheid": {
                 definition: "Gericht zijn op het behalen van concrete resultaten en doelstellingen.",
-                behavior: "Stelt meetbare doelen; bewaakt voortgang; grijpt in bij achterstanden; viert behaalde resultaten."
+                behavior: "Stelt meetbare doelen; bewaakt voortgang; grijpt in bij achterstanden."
             },
             "Samenwerken": {
-                definition: "Actief bijdragen aan een gezamenlijk resultaat, ook als dit niet in direct eigen belang is.",
-                behavior: "Werkt constructief mee; deelt informatie; ondersteunt collega's; respecteert afspraken."
-            },
-            "Schriftelijke communicatie": {
-                definition: "Informatie duidelijk en gestructureerd op schrift stellen.",
-                behavior: "Schrijft begrijpelijk; gebruikt logische opbouw; beperkt zich tot essentie; stemt schrijfstijl af op doelgroep."
+                definition: "Actief bijdragen aan een gezamenlijk resultaat.",
+                behavior: "Werkt constructief mee; deelt informatie; ondersteunt collega's."
             },
             "Sensitiviteit": {
-                definition: "Inschatten van gevoelens en behoeften van anderen en daar rekening mee houden.",
-                behavior: "Signaleert non-verbale signalen; toont begrip; speelt in op emoties; respecteert andermans positie."
+                definition: "Inschatten van gevoelens en behoeften van anderen.",
+                behavior: "Signaleert non-verbale signalen; toont begrip; speelt in op emoties."
             },
             "Sociabiliteit": {
                 definition: "Gemakkelijk contact leggen en onderhouden.",
-                behavior: "Neemt initiatief tot gesprek; mengt zich onder anderen; stelt zich open en benaderbaar op."
+                behavior: "Neemt initiatief tot gesprek; mengt zich onder anderen."
             },
             "Stressbestendigheid": {
-                definition: "Effectief blijven functioneren onder tijdsdruk, teleurstelling of tegenslag.",
-                behavior: "Blijft kalm onder druk; houdt overzicht; reageert beheerst; gaat door ondanks tegenvallers."
+                definition: "Effectief blijven functioneren onder tijdsdruk of tegenslag.",
+                behavior: "Blijft kalm onder druk; houdt overzicht; reageert beheerst."
             },
             "Vasthoudendheid": {
-                definition: "Blijven volhouden totdat een doel bereikt is of niet meer haalbaar is.",
-                behavior: "Laat zich niet snel afschrikken; herhaalt acties indien nodig; zoekt alternatieve wegen; blijft gericht op resultaat."
+                definition: "Blijven volhouden totdat een doel bereikt is.",
+                behavior: "Laat zich niet snel afschrikken; zoekt alternatieve wegen."
             },
             "Verantwoordelijkheid": {
-                definition: "Aansprakelijkheid nemen voor gemaakte afspraken en gevolgen van beslissingen.",
-                behavior: "Komt beloftes na; erkent fouten; neemt consequenties; toont eigenaarschap."
+                definition: "Aansprakelijkheid nemen voor afspraken en gevolgen van beslissingen.",
+                behavior: "Komt beloftes na; erkent fouten; toont eigenaarschap."
             },
-            "Visie en strategisch denken": {
+            "Visie": {
                 definition: "Een inspirerend beeld van de toekomst vormen en langetermijndoelen formuleren.",
-                behavior: "Denkt toekomstgericht; ontwikkelt scenario's; verbindt trends met strategie; maakt keuzes op basis van langetermijn-impact."
-            },
-            "Visie uitdragen": {
-                definition: "Anderen inspireren en richting geven met een toekomstbeeld.",
-                behavior: "Vertelt helder waar de organisatie naartoe gaat; koppelt visie aan dagelijkse praktijk; motiveert anderen."
-            },
-            "Voortgangsbewaking": {
-                definition: "Procedures opstellen en bewaken om voortgang te monitoren.",
-                behavior: "Houdt overzicht; signaleert afwijkingen; grijpt tijdig in; rapporteert voortgang."
+                behavior: "Denkt toekomstgericht; ontwikkelt scenario's; verbindt trends met strategie."
             },
             "Zelfbeheersing": {
-                definition: "Gevoelens beheersen om effectief te blijven in situaties van spanning of emotie.",
-                behavior: "Blijft kalm bij conflicten; reageert niet impulsief; bewaart professionaliteit; houdt emoties onder controle."
-            },
-            "Zelfeffectiviteit": {
-                definition: "Geloof in het eigen vermogen om gewenste prestaties te leveren in specifieke situaties.",
-                behavior: "Neemt verantwoordelijkheid, gelooft dat inspanning loont, toont zelfvertrouwen bij nieuwe taken."
+                definition: "Gevoelens beheersen om effectief te blijven bij spanning of emotie.",
+                behavior: "Blijft kalm bij conflicten; reageert niet impulsief."
             },
             "Zelfontwikkeling": {
                 definition: "Gericht zijn op het ontwikkelen van eigen kennis en vaardigheden.",
-                behavior: "Vraagt feedback; volgt trainingen; experimenteert met nieuw gedrag; leert van ervaringen."
+                behavior: "Vraagt feedback; volgt trainingen; leert van ervaringen."
             }
         };
 
-        // Statements mapped to qualities - each statement measures specific qualities
-        const statements = [
-            { text: "Als plannen plotseling veranderen, pas ik me snel aan en zoek ik een nieuwe aanpak.", qualities: ["Aanpassingsvermogen", "Flexibel gedrag"] },
-            { text: "Ik stel mezelf regelmatig ambitieuze doelen die buiten mijn comfortzone liggen.", qualities: ["Ambitie", "Durf"] },
-            { text: "Als er een beslissing genomen moet worden, neem ik liever snel een standpunt in dan lang te twijfelen.", qualities: ["Besluitvaardigheid", "Durf"] },
-            { text: "Ik vind het waardevol om collega's te helpen groeien door feedback en begeleiding.", qualities: ["Coachen", "Sensitiviteit"] },
-            { text: "Bij complexe vraagstukken zoek ik naar de onderliggende patronen en verbanden.", qualities: ["Conceptueel denken", "Probleemanalyse"] },
-            { text: "Ik zorg ervoor dat afspraken met anderen altijd helder en bij voorkeur schriftelijk zijn vastgelegd.", qualities: ["Contracteren", "Discipline"] },
-            { text: "Ik kom regelmatig met ideeën die anderen als verrassend of onconventioneel beschouwen.", qualities: ["Creativiteit", "Initiatief"] },
-            { text: "Ik geef taken graag uit handen en vertrouw erop dat anderen ze goed uitvoeren.", qualities: ["Delegeren", "Vertrouwen"] },
-            { text: "Ik houd me strikt aan procedures en regels, ook als ze soms omslachtig lijken.", qualities: ["Discipline", "Integriteit"] },
-            { text: "Ik durf risico's te nemen als ik geloof dat het een goede kans oplevert.", qualities: ["Durf", "Ondernemerschap"] },
-            { text: "Bij zakelijke beslissingen weeg ik altijd de financiële consequenties zorgvuldig af.", qualities: ["Economische besluitvaardigheid", "Oordeelsvorming"] },
-            { text: "Zelfs na een lange werkdag heb ik vaak nog energie om door te gaan.", qualities: ["Energie", "Inzet"] },
-            { text: "Als mijn gebruikelijke aanpak niet werkt, probeer ik zonder aarzelen iets anders.", qualities: ["Flexibel gedrag", "Aanpassingsvermogen"] },
-            { text: "Ik vind het motiverend om een team aan te sturen en samen naar een doel te werken.", qualities: ["Groepsgericht leidinggeven", "Samenwerken"] },
-            { text: "Mensen zeggen dat ik een overtuigende en betrouwbare uitstraling heb.", qualities: ["Impact", "Overtuigingskracht"] },
-            { text: "Ik pas mijn manier van aansturen aan op basis van wat een individuele medewerker nodig heeft.", qualities: ["Individueel leidinggeven", "Sensitiviteit"] },
-            { text: "Ik wacht niet tot iemand mij vraagt iets te doen; ik zie wat nodig is en pak het op.", qualities: ["Initiatief", "Verantwoordelijkheid"] },
-            { text: "Ik handel altijd volgens mijn principes, ook als dat nadelig voor mezelf is.", qualities: ["Integriteit", "Onafhankelijkheid"] },
-            { text: "Ik kan nieuwe, complexe informatie snel doorgronden en toepassen.", qualities: ["Intelligentie (vloeiende)", "Leervermogen"] },
-            { text: "Ik vind het boeiend om met mensen van verschillende culturele achtergronden samen te werken.", qualities: ["Interculturele oriëntatie", "Sociabiliteit"] },
-            { text: "Ik doe mijn werk vooral omdat ik het zinvol vind, niet vanwege externe beloningen.", qualities: ["Intrinsieke motivatie", "Inzet"] },
-            { text: "Ik lever altijd meer dan het minimum en streef naar het beste resultaat.", qualities: ["Inzet", "Kwaliteitsgerichtheid"] },
-            { text: "Ik verdiep me graag in wat klanten of gebruikers echt nodig hebben.", qualities: ["Klantgerichtheid", "Luisteren"] },
-            { text: "Ik controleer mijn werk altijd zorgvuldig voordat ik het oplever.", qualities: ["Kwaliteitsgerichtheid", "Omgang met details"] },
-            { text: "Na een fout of tegenslag analyseer ik wat ik ervan kan leren voor de volgende keer.", qualities: ["Leervermogen", "Zelfontwikkeling"] },
-            { text: "In gesprekken let ik goed op wat de ander zegt en vraag ik door om het te begrijpen.", qualities: ["Luisteren", "Sensitiviteit"] },
-            { text: "Ik volg actief ontwikkelingen in mijn vakgebied en de markt.", qualities: ["Marktgerichtheid", "Omgevingsbewustzijn"] },
-            { text: "Ik kan mijn gedachten helder verwoorden zodat anderen me goed begrijpen.", qualities: ["Mondelinge communicatie", "Overtuigingskracht"] },
-            { text: "Ik voel me op mijn gemak wanneer ik voor een groep moet presenteren.", qualities: ["Mondelinge presentatie", "Impact"] },
-            { text: "Ik investeer bewust tijd in het opbouwen en onderhouden van mijn professionele netwerk.", qualities: ["Netwerken", "Sociabiliteit"] },
-            { text: "Ik merk fouten of inconsistenties in documenten of data snel op.", qualities: ["Omgang met details", "Kwaliteitsgerichtheid"] },
-            { text: "Ik houd rekening met maatschappelijke en politieke ontwikkelingen die ons werk kunnen beïnvloeden.", qualities: ["Omgevingsbewustzijn", "Visie en strategisch denken"] },
-            { text: "Ik vorm mijn eigen mening en laat me niet snel beïnvloeden door groepsdruk.", qualities: ["Onafhankelijkheid", "Integriteit"] },
-            { text: "In onderhandelingen zoek ik naar oplossingen waar beide partijen tevreden mee zijn.", qualities: ["Onderhandelen", "Sensitiviteit"] },
-            { text: "Ik zie regelmatig kansen om iets nieuws te starten of te verbeteren.", qualities: ["Ondernemerschap", "Creativiteit"] },
-            { text: "Voordat ik een oordeel vel, verzamel ik eerst alle relevante informatie.", qualities: ["Oordeelsvorming", "Probleemanalyse"] },
-            { text: "Ik voel me verbonden met de missie en doelen van de organisatie waar ik werk.", qualities: ["Organisatieloyaliteit", "Intrinsieke motivatie"] },
-            { text: "Ik besef dat mijn beslissingen effect kunnen hebben op andere afdelingen of teams.", qualities: ["Organisatiesensitiviteit", "Conceptueel denken"] },
-            { text: "Ik weet hoe ik mensen en middelen effectief moet inzetten om een doel te bereiken.", qualities: ["Organiseren", "Plannen en organiseren"] },
-            { text: "Ik houd mijn eigen werk goed georganiseerd en weet precies wat mijn prioriteiten zijn.", qualities: ["Organiseren van eigen werk", "Discipline"] },
-            { text: "Ik kan anderen overtuigen van mijn standpunt door de juiste argumenten te gebruiken.", qualities: ["Overtuigingskracht", "Mondelinge communicatie"] },
-            { text: "Ik maak graag een planning en verdeel taken logisch over tijd en mensen.", qualities: ["Plannen en organiseren", "Organiseren"] },
-            { text: "Bij een probleem ga ik systematisch op zoek naar de oorzaak voordat ik oplossingen bedenk.", qualities: ["Probleemanalyse", "Intelligentie (vloeiende)"] },
-            { text: "Ik stel meetbare doelen en houd de voortgang nauwlettend in de gaten.", qualities: ["Resultaatgerichtheid", "Voortgangsbewaking"] },
-            { text: "Ik vind het belangrijk om bij te dragen aan het succes van het team, ook als ik er zelf niet direct van profiteer.", qualities: ["Samenwerken", "Organisatieloyaliteit"] },
-            { text: "Ik kan mijn gedachten helder en gestructureerd opschrijven.", qualities: ["Schriftelijke communicatie", "Omgang met details"] },
-            { text: "Ik merk het snel als iemand zich ongemakkelijk voelt of ergens mee zit.", qualities: ["Sensitiviteit", "Luisteren"] },
-            { text: "Ik vind het makkelijk om nieuwe contacten te leggen en een gesprek te starten.", qualities: ["Sociabiliteit", "Netwerken"] },
-            { text: "Onder hoge druk of in stressvolle situaties blijf ik kalm en gefocust.", qualities: ["Stressbestendigheid", "Zelfbeheersing"] },
-            { text: "Als iets niet lukt, geef ik niet op maar probeer ik het op een andere manier.", qualities: ["Vasthoudendheid", "Energie"] },
-            { text: "Als ik een fout maak, neem ik daar openlijk de verantwoordelijkheid voor.", qualities: ["Verantwoordelijkheid", "Integriteit"] },
-            { text: "Ik denk vaak na over waar ons team of organisatie over vijf jaar zou moeten staan.", qualities: ["Visie en strategisch denken", "Omgevingsbewustzijn"] },
-            { text: "Ik kan anderen enthousiasmeren voor een gedeelde toekomstvisie.", qualities: ["Visie uitdragen", "Overtuigingskracht"] },
-            { text: "Ik houd graag bij hoe projecten vorderen en grijp in als er vertragingen dreigen.", qualities: ["Voortgangsbewaking", "Resultaatgerichtheid"] },
-            { text: "In emotionele of gespannen situaties kan ik mijn gevoelens goed onder controle houden.", qualities: ["Zelfbeheersing", "Stressbestendigheid"] },
-            { text: "Ik geloof dat ik de meeste uitdagingen aankan als ik me er goed voor inzet.", qualities: ["Zelfeffectiviteit", "Intrinsieke motivatie"] },
-            { text: "Ik zoek actief naar mogelijkheden om nieuwe vaardigheden te leren.", qualities: ["Zelfontwikkeling", "Leervermogen"] },
-            { text: "Wanneer prioriteiten verschuiven, kan ik mijn werkwijze snel omgooien.", qualities: ["Aanpassingsvermogen", "Flexibel gedrag"] },
-            { text: "Ik streef ernaar om steeds grotere verantwoordelijkheden te krijgen in mijn werk.", qualities: ["Ambitie", "Initiatief"] },
-            { text: "Ik neem liever een beslissing met enig risico dan te lang in onzekerheid te blijven.", qualities: ["Besluitvaardigheid", "Durf"] }
+        // Question sets - each contains 4 statements mapping to different qualities
+        // Grouped to create meaningful contrasts
+        const questionSets = [
+            {
+                statements: [
+                    { text: "Ik pas me makkelijk aan wanneer plannen veranderen", quality: "Aanpassingsvermogen" },
+                    { text: "Ik werk het liefst volgens vaste procedures en regels", quality: "Discipline" },
+                    { text: "Ik neem graag risico's om nieuwe kansen te benutten", quality: "Durf" },
+                    { text: "Ik analyseer situaties grondig voordat ik handel", quality: "Oordeelsvorming" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik streef naar steeds hogere functies en verantwoordelijkheden", quality: "Ambitie" },
+                    { text: "Ik haal voldoening uit het helpen ontwikkelen van anderen", quality: "Coachen" },
+                    { text: "Ik werk het liefst in een hecht team aan gezamenlijke doelen", quality: "Samenwerken" },
+                    { text: "Ik werk graag zelfstandig en bepaal mijn eigen koers", quality: "Onafhankelijkheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik neem snel beslissingen, ook als niet alle informatie beschikbaar is", quality: "Besluitvaardigheid" },
+                    { text: "Ik verzamel eerst alle feiten voordat ik tot een conclusie kom", quality: "Probleemanalyse" },
+                    { text: "Ik zoek naar creatieve, onconventionele oplossingen", quality: "Creativiteit" },
+                    { text: "Ik volg bewezen methodes die hun waarde hebben bewezen", quality: "Discipline" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik ben goed in het aansturen en motiveren van een team", quality: "Groepsgericht leiderschap" },
+                    { text: "Ik ben sterk in het leggen van nieuwe contacten", quality: "Netwerken" },
+                    { text: "Ik merk snel aan wat anderen voelen of nodig hebben", quality: "Sensitiviteit" },
+                    { text: "Ik focus me vooral op het behalen van concrete resultaten", quality: "Resultaatgerichtheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik kan complexe problemen snel doorgronden", quality: "Analytisch vermogen" },
+                    { text: "Ik zie het grote geheel en verbanden tussen onderwerpen", quality: "Conceptueel denken" },
+                    { text: "Ik let sterk op details en werk zeer nauwkeurig", quality: "Nauwkeurigheid" },
+                    { text: "Ik handel praktisch en resultaatgericht", quality: "Resultaatgerichtheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik maak een sterke, zelfverzekerde eerste indruk", quality: "Impact" },
+                    { text: "Ik luister aandachtig en vraag goed door", quality: "Luisteren" },
+                    { text: "Ik kan anderen goed overtuigen van mijn standpunt", quality: "Mondelinge communicatie" },
+                    { text: "Ik bouw makkelijk relaties op en onderhoud ze", quality: "Sociabiliteit" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik neem initiatief zonder op opdrachten te wachten", quality: "Initiatief" },
+                    { text: "Ik geef taken graag uit handen aan anderen", quality: "Delegeren" },
+                    { text: "Ik plan mijn werk zorgvuldig en houd me aan deadlines", quality: "Plannen" },
+                    { text: "Ik reageer flexibel op wat er op mijn pad komt", quality: "Flexibiliteit" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik handel altijd volgens mijn principes, ook onder druk", quality: "Integriteit" },
+                    { text: "Ik pas mijn aanpak aan om het beste resultaat te bereiken", quality: "Flexibiliteit" },
+                    { text: "Ik zoek naar compromissen waar iedereen tevreden mee is", quality: "Onderhandelen" },
+                    { text: "Ik sta stevig voor mijn eigen mening, ook bij tegenstand", quality: "Onafhankelijkheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik heb veel energie en ga door waar anderen stoppen", quality: "Energie" },
+                    { text: "Ik blijf kalm en effectief onder hoge druk", quality: "Stressbestendigheid" },
+                    { text: "Ik geef niet op totdat ik mijn doel heb bereikt", quality: "Vasthoudendheid" },
+                    { text: "Ik beheers mijn emoties goed, ook in lastige situaties", quality: "Zelfbeheersing" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik verdiep me graag in wat de klant echt nodig heeft", quality: "Klantgerichtheid" },
+                    { text: "Ik streef naar de hoogste kwaliteit in alles wat ik doe", quality: "Kwaliteitsgerichtheid" },
+                    { text: "Ik zie snel kansen om commercieel voordeel te behalen", quality: "Ondernemerschap" },
+                    { text: "Ik begrijp goed hoe beslissingen andere afdelingen raken", quality: "Organisatiesensitiviteit" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik leer snel nieuwe dingen en pas ze direct toe", quality: "Leervermogen" },
+                    { text: "Ik investeer actief in mijn eigen ontwikkeling", quality: "Zelfontwikkeling" },
+                    { text: "Ik neem verantwoordelijkheid voor mijn fouten en acties", quality: "Verantwoordelijkheid" },
+                    { text: "Ik denk na over de lange termijn en toekomstige ontwikkelingen", quality: "Visie" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik vind het makkelijk om met iedereen een praatje te maken", quality: "Sociabiliteit" },
+                    { text: "Ik help collega's graag met hun problemen", quality: "Samenwerken" },
+                    { text: "Ik merk subtiele signalen op in hoe mensen zich voelen", quality: "Sensitiviteit" },
+                    { text: "Ik kan goed inschatten wat er politiek speelt in een organisatie", quality: "Organisatiesensitiviteit" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik zoek actief naar innovatieve oplossingen", quality: "Creativiteit" },
+                    { text: "Ik onderbouw mijn standpunten met sterke argumenten", quality: "Oordeelsvorming" },
+                    { text: "Ik ga gestructureerd te werk bij het oplossen van problemen", quality: "Probleemanalyse" },
+                    { text: "Ik handel op basis van logica en feiten", quality: "Analytisch vermogen" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik motiveer anderen met een inspirerend toekomstbeeld", quality: "Visie" },
+                    { text: "Ik geef duidelijke richting en instructies aan medewerkers", quality: "Groepsgericht leiderschap" },
+                    { text: "Ik pas mijn leiderschapsstijl aan per persoon", quality: "Coachen" },
+                    { text: "Ik creëer commitment door heldere afspraken te maken", quality: "Onderhandelen" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik durf te zeggen wat ik denk, ook als het onpopulair is", quality: "Durf" },
+                    { text: "Ik wacht niet af maar onderneem direct actie", quality: "Initiatief" },
+                    { text: "Ik werk autonoom zonder veel sturing nodig te hebben", quality: "Onafhankelijkheid" },
+                    { text: "Ik neem de leiding in onzekere situaties", quality: "Besluitvaardigheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik controleer mijn werk grondig op fouten", quality: "Nauwkeurigheid" },
+                    { text: "Ik lever altijd hoge kwaliteit, ook onder tijdsdruk", quality: "Kwaliteitsgerichtheid" },
+                    { text: "Ik houd goed bij of projecten op schema liggen", quality: "Plannen" },
+                    { text: "Ik maak realistische inschattingen van wat haalbaar is", quality: "Oordeelsvorming" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik leg makkelijk contact met nieuwe mensen", quality: "Netwerken" },
+                    { text: "Ik kan mijn boodschap helder en overtuigend overbrengen", quality: "Mondelinge communicatie" },
+                    { text: "Ik wek vertrouwen door mijn uitstraling en gedrag", quality: "Impact" },
+                    { text: "Ik luister actief en check of ik het goed heb begrepen", quality: "Luisteren" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik blijf doorzetten ondanks tegenslagen", quality: "Vasthoudendheid" },
+                    { text: "Ik pas mijn strategie aan als iets niet werkt", quality: "Aanpassingsvermogen" },
+                    { text: "Ik behoud energie en enthousiasme gedurende lange projecten", quality: "Energie" },
+                    { text: "Ik stel ambitieuze doelen en werk er hard naartoe", quality: "Ambitie" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik deel kennis en help collega's vooruit", quality: "Coachen" },
+                    { text: "Ik draag bij aan teamsucces, ook als ik er zelf weinig aan heb", quality: "Samenwerken" },
+                    { text: "Ik vertrouw taken toe aan anderen en laat ze los", quality: "Delegeren" },
+                    { text: "Ik neem eindverantwoordelijkheid voor het resultaat", quality: "Verantwoordelijkheid" }
+                ]
+            },
+            {
+                statements: [
+                    { text: "Ik spot commerciële kansen die anderen missen", quality: "Ondernemerschap" },
+                    { text: "Ik begrijp goed wat klanten willen en lever dat", quality: "Klantgerichtheid" },
+                    { text: "Ik leer van mijn ervaringen en ontwikkel mezelf continu", quality: "Leervermogen" },
+                    { text: "Ik reageer evenwichtig en kalm in emotionele situaties", quality: "Zelfbeheersing" }
+                ]
+            }
         ];
 
         // State
-        let currentStatementIndex = 0;
-        let answers = []; // Array of {statementIndex, value}
-        let shuffledStatements = [];
-        let qualityScores = {};
-
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
+        let currentQuestionIndex = 0;
+        let answers = []; // Array of { most: qualityName, least: qualityName }
+        let selectionPhase = 'most'; // 'most' or 'least'
+        let currentMostSelection = null;
+        let currentLeastSelection = null;
 
         function startAssessment() {
-            // Shuffle statements for variety
-            shuffledStatements = shuffleArray(statements);
-            answers = new Array(shuffledStatements.length).fill(null);
-            currentStatementIndex = 0;
-            qualityScores = {};
-
-            // Initialize scores for all qualities
-            Object.keys(qualities).forEach(q => {
-                qualityScores[q] = { total: 0, count: 0 };
-            });
+            answers = [];
+            currentQuestionIndex = 0;
+            selectionPhase = 'most';
+            currentMostSelection = null;
+            currentLeastSelection = null;
 
             document.getElementById('introScreen').classList.remove('active');
             document.getElementById('questionScreen').classList.add('active');
             document.getElementById('progressContainer').style.display = 'block';
             document.getElementById('progressText').style.display = 'block';
 
-            renderStatement();
+            renderQuestion();
         }
 
-        function renderStatement() {
-            const statement = shuffledStatements[currentStatementIndex];
+        function renderQuestion() {
+            const questionSet = questionSets[currentQuestionIndex];
 
-            document.getElementById('statementNumber').textContent =
-                `Stelling ${currentStatementIndex + 1} van ${shuffledStatements.length}`;
-            document.getElementById('statementText').textContent = statement.text;
+            // Update question number
+            document.getElementById('questionNumber').textContent =
+                `Vraag ${currentQuestionIndex + 1} van ${questionSets.length}`;
 
             // Update progress
-            const progress = ((currentStatementIndex + 1) / shuffledStatements.length) * 100;
+            const progress = ((currentQuestionIndex) / questionSets.length) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
             document.getElementById('progressText').textContent =
                 `${Math.round(progress)}% voltooid`;
 
-            // Reset selection
-            document.querySelectorAll('.likert-option').forEach(opt => {
-                opt.classList.remove('selected');
+            // Update phase indicator
+            updatePhaseIndicator();
+
+            // Update instruction
+            updateInstruction();
+
+            // Render statements
+            const container = document.getElementById('statementOptions');
+            container.innerHTML = '';
+
+            questionSet.statements.forEach((statement, index) => {
+                const option = document.createElement('div');
+                option.className = 'statement-option';
+                option.dataset.index = index;
+                option.dataset.quality = statement.quality;
+
+                // Check if this is already selected
+                if (currentMostSelection === index) {
+                    option.classList.add('selected-most');
+                }
+                if (currentLeastSelection === index) {
+                    option.classList.add('selected-least');
+                }
+
+                // Disable if in 'least' phase and this is the 'most' selection
+                if (selectionPhase === 'least' && currentMostSelection === index) {
+                    option.classList.add('disabled');
+                }
+
+                option.innerHTML = `
+                    <div class="statement-marker">${getMarkerText(index)}</div>
+                    <div class="statement-text">${statement.text}</div>
+                `;
+
+                option.onclick = () => selectStatement(index);
+                container.appendChild(option);
             });
 
-            // Restore previous answer if exists
-            if (answers[currentStatementIndex] !== null) {
-                const previousValue = answers[currentStatementIndex];
-                document.querySelector(`.likert-option[data-value="${previousValue}"]`)?.classList.add('selected');
-            }
+            // Update status display
+            updateStatusDisplay();
 
             // Update nav buttons
             document.getElementById('prevBtn').style.visibility =
-                currentStatementIndex === 0 ? 'hidden' : 'visible';
+                (currentQuestionIndex === 0 && selectionPhase === 'most') ? 'hidden' : 'visible';
 
-            const isLast = currentStatementIndex === shuffledStatements.length - 1;
-            document.getElementById('nextBtn').textContent = isLast ? 'Bekijk resultaten' : 'Volgende';
+            updateNextButton();
 
             // Add animation
-            document.querySelector('.statement-card').classList.add('scale-in');
+            document.querySelector('.question-card').classList.add('scale-in');
             setTimeout(() => {
-                document.querySelector('.statement-card').classList.remove('scale-in');
+                document.querySelector('.question-card').classList.remove('scale-in');
             }, 300);
         }
 
-        function selectAnswer(value) {
-            answers[currentStatementIndex] = value;
-
-            // Update UI
-            document.querySelectorAll('.likert-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            document.querySelector(`.likert-option[data-value="${value}"]`).classList.add('selected');
+        function getMarkerText(index) {
+            if (currentMostSelection === index) return '✓';
+            if (currentLeastSelection === index) return '✗';
+            return String.fromCharCode(65 + index); // A, B, C, D
         }
 
-        function previousStatement() {
-            if (currentStatementIndex > 0) {
-                currentStatementIndex--;
-                renderStatement();
+        function updatePhaseIndicator() {
+            const phase1 = document.getElementById('phase1');
+            const phase2 = document.getElementById('phase2');
+
+            phase1.className = 'phase-dot';
+            phase2.className = 'phase-dot';
+
+            if (selectionPhase === 'most') {
+                phase1.classList.add('active');
+            } else {
+                phase1.classList.add('completed');
+                phase2.classList.add('active');
             }
         }
 
-        function nextStatement() {
-            if (answers[currentStatementIndex] === null) {
-                showToast('Selecteer eerst een antwoord');
+        function updateInstruction() {
+            const instruction = document.getElementById('questionInstruction');
+            const subtext = document.getElementById('questionSubtext');
+
+            if (selectionPhase === 'most') {
+                instruction.textContent = 'Welke stelling past het MEEST bij jou?';
+                subtext.textContent = 'Klik op de stelling die jou het beste omschrijft';
+            } else {
+                instruction.textContent = 'Welke stelling past het MINST bij jou?';
+                subtext.textContent = 'Klik op de stelling die het minst bij jou past';
+            }
+        }
+
+        function updateStatusDisplay() {
+            const questionSet = questionSets[currentQuestionIndex];
+
+            document.getElementById('mostStatus').textContent =
+                currentMostSelection !== null ?
+                String.fromCharCode(65 + currentMostSelection) : '-';
+
+            document.getElementById('leastStatus').textContent =
+                currentLeastSelection !== null ?
+                String.fromCharCode(65 + currentLeastSelection) : '-';
+        }
+
+        function selectStatement(index) {
+            const questionSet = questionSets[currentQuestionIndex];
+
+            if (selectionPhase === 'most') {
+                // Can't select the same as least (if going back)
+                if (currentLeastSelection === index) return;
+
+                currentMostSelection = index;
+                selectionPhase = 'least';
+                renderQuestion();
+            } else {
+                // Can't select the same as most
+                if (currentMostSelection === index) return;
+
+                currentLeastSelection = index;
+                updateNextButton();
+                renderQuestion();
+            }
+        }
+
+        function updateNextButton() {
+            const nextBtn = document.getElementById('nextBtn');
+            const isComplete = currentMostSelection !== null && currentLeastSelection !== null;
+
+            nextBtn.disabled = !isComplete;
+
+            const isLast = currentQuestionIndex === questionSets.length - 1;
+            nextBtn.textContent = isLast ? 'Bekijk resultaten' : 'Volgende';
+        }
+
+        function previousQuestion() {
+            if (selectionPhase === 'least' && currentLeastSelection === null) {
+                // Go back to 'most' selection in current question
+                selectionPhase = 'most';
+                currentMostSelection = null;
+                renderQuestion();
+            } else if (currentQuestionIndex > 0) {
+                // Go to previous question
+                currentQuestionIndex--;
+
+                // Restore previous answers if they exist
+                if (answers[currentQuestionIndex]) {
+                    const questionSet = questionSets[currentQuestionIndex];
+                    const prevAnswer = answers[currentQuestionIndex];
+
+                    currentMostSelection = questionSet.statements.findIndex(s => s.quality === prevAnswer.most);
+                    currentLeastSelection = questionSet.statements.findIndex(s => s.quality === prevAnswer.least);
+                    selectionPhase = 'least';
+                } else {
+                    currentMostSelection = null;
+                    currentLeastSelection = null;
+                    selectionPhase = 'most';
+                }
+
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentMostSelection === null || currentLeastSelection === null) {
+                showToast('Selecteer eerst beide opties');
                 return;
             }
 
-            if (currentStatementIndex < shuffledStatements.length - 1) {
-                currentStatementIndex++;
-                renderStatement();
+            // Save answer
+            const questionSet = questionSets[currentQuestionIndex];
+            answers[currentQuestionIndex] = {
+                most: questionSet.statements[currentMostSelection].quality,
+                least: questionSet.statements[currentLeastSelection].quality
+            };
+
+            if (currentQuestionIndex < questionSets.length - 1) {
+                currentQuestionIndex++;
+                currentMostSelection = null;
+                currentLeastSelection = null;
+                selectionPhase = 'most';
+                renderQuestion();
             } else {
                 showProcessing();
             }
@@ -1141,7 +1374,6 @@
             document.getElementById('progressContainer').style.display = 'none';
             document.getElementById('progressText').style.display = 'none';
 
-            // Animate processing steps
             const steps = ['step1', 'step2', 'step3', 'step4'];
             let currentStep = 0;
 
@@ -1161,36 +1393,35 @@
                     clearInterval(interval);
                     setTimeout(calculateAndShowResults, 500);
                 }
-            }, 600);
+            }, 500);
         }
 
         function calculateAndShowResults() {
             // Calculate scores
-            shuffledStatements.forEach((statement, index) => {
-                const value = answers[index];
-                if (value !== null) {
-                    statement.qualities.forEach(quality => {
-                        if (qualityScores[quality]) {
-                            qualityScores[quality].total += value;
-                            qualityScores[quality].count += 1;
-                        }
-                    });
+            const scores = {};
+            Object.keys(qualities).forEach(q => {
+                scores[q] = 0;
+            });
+
+            // Most = +2 points, Least = -1 point
+            answers.forEach(answer => {
+                if (answer.most && scores[answer.most] !== undefined) {
+                    scores[answer.most] += 2;
+                }
+                if (answer.least && scores[answer.least] !== undefined) {
+                    scores[answer.least] -= 1;
                 }
             });
 
-            // Calculate averages and sort
-            const qualityAverages = Object.entries(qualityScores)
-                .filter(([_, data]) => data.count > 0)
-                .map(([name, data]) => ({
-                    name,
-                    average: data.total / data.count,
-                    total: data.total,
-                    count: data.count
-                }))
-                .sort((a, b) => b.average - a.average);
+            // Sort and get top 5
+            const sortedQualities = Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
 
-            // Get top 5
-            const top5 = qualityAverages.slice(0, 5);
+            // Calculate max possible score for percentage
+            const maxScore = questionSets.length * 2; // If always chosen as 'most'
+            const minScore = -questionSets.length; // If always chosen as 'least'
+            const range = maxScore - minScore;
 
             // Show results
             document.getElementById('processingScreen').classList.remove('active');
@@ -1199,9 +1430,10 @@
             const container = document.getElementById('resultsContainer');
             container.innerHTML = '';
 
-            top5.forEach((quality, index) => {
-                const qualityData = qualities[quality.name];
-                const scorePercent = Math.round((quality.average / 5) * 100);
+            sortedQualities.forEach(([name, score], index) => {
+                const qualityData = qualities[name];
+                // Normalize score to percentage (0-100)
+                const normalizedScore = Math.round(((score - minScore) / range) * 100);
 
                 const card = document.createElement('div');
                 card.className = `result-card rank-${index + 1} fade-slide-in`;
@@ -1209,8 +1441,8 @@
                 card.innerHTML = `
                     <div class="result-header">
                         <div class="result-rank">${index + 1}</div>
-                        <div class="result-name">${quality.name}</div>
-                        <div class="result-score">${scorePercent}%</div>
+                        <div class="result-name">${name}</div>
+                        <div class="result-score">${normalizedScore}%</div>
                     </div>
                     <p class="result-definition">${qualityData.definition}</p>
                     <div class="result-behavior">
@@ -1220,8 +1452,11 @@
                 container.appendChild(card);
             });
 
-            // Store results for sharing
-            window.assessmentResults = top5;
+            window.assessmentResults = sortedQualities.map(([name, score]) => ({
+                name,
+                score,
+                normalizedScore: Math.round(((score - minScore) / range) * 100)
+            }));
         }
 
         function copyResults() {
@@ -1232,8 +1467,7 @@
 
             window.assessmentResults.forEach((quality, index) => {
                 const qualityData = qualities[quality.name];
-                const scorePercent = Math.round((quality.average / 5) * 100);
-                text += `${index + 1}. ${quality.name} (${scorePercent}%)\n`;
+                text += `${index + 1}. ${quality.name} (${quality.normalizedScore}%)\n`;
                 text += `   ${qualityData.definition}\n`;
                 text += `   Gedrag: ${qualityData.behavior}\n\n`;
             });
@@ -1276,13 +1510,13 @@
                 </head>
                 <body>
                     <h1>Mijn Top 5 Kwaliteiten</h1>
-                    <p style="color: #666;">Op basis van de kwaliteiten-assessment</p>
+                    <p style="color: #666;">Op basis van de kwaliteiten-assessment (forced choice)</p>
                     ${top5.map((q, i) => `
                         <div class="quality">
                             <h3>
                                 <span class="rank">${i + 1}</span>
                                 ${q.name}
-                                <span class="score">${Math.round((q.average / 5) * 100)}%</span>
+                                <span class="score">${q.normalizedScore}%</span>
                             </h3>
                             <p class="definition">${qualities[q.name].definition}</p>
                             <p class="behavior"><strong>Herkenbaar gedrag:</strong> ${qualities[q.name].behavior}</p>
@@ -1304,7 +1538,7 @@
             document.getElementById('resultsScreen').classList.remove('active');
             document.getElementById('introScreen').classList.add('active');
             answers = [];
-            currentStatementIndex = 0;
+            currentQuestionIndex = 0;
             window.assessmentResults = null;
         }
 
@@ -1317,19 +1551,6 @@
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (!document.getElementById('questionScreen').classList.contains('active')) return;
-
-            if (e.key >= '1' && e.key <= '5') {
-                selectAnswer(6 - parseInt(e.key)); // Reverse because 1=Helemaal mee eens=5 points
-            } else if (e.key === 'Enter' || e.key === 'ArrowRight') {
-                nextStatement();
-            } else if (e.key === 'ArrowLeft') {
-                previousStatement();
-            }
-        });
     </script>
 </body>
 </html>
