@@ -195,70 +195,75 @@
             margin-bottom: 20px;
         }
 
-        .question-prompt {
-            font-size: 1.1rem;
+        .statement-text {
+            font-size: 1.15rem;
             color: var(--text);
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             font-weight: 500;
             text-align: center;
+            line-height: 1.5;
+            min-height: 60px;
         }
 
-        .comparison-options {
+        /* Likert scale */
+        .likert-container {
+            margin-top: 20px;
+        }
+
+        .likert-labels {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: var(--text-light);
         }
 
-        .comparison-option {
-            padding: 20px;
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .likert-option {
+            flex: 1;
+            aspect-ratio: 1;
+            max-width: 60px;
+            border: 3px solid var(--border);
+            border-radius: 12px;
             background: var(--bg);
-            border: 3px solid transparent;
-            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
-            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-light);
         }
 
-        .comparison-option:hover {
+        .likert-option:hover {
             border-color: var(--primary-light);
-            background: white;
             transform: translateY(-2px);
         }
 
-        .comparison-option.selected {
+        .likert-option.selected {
             border-color: var(--primary);
-            background: rgba(79, 70, 229, 0.08);
+            background: var(--primary);
+            color: white;
         }
 
-        .option-label {
+        .likert-option.selected-1 { background: #EF4444; border-color: #EF4444; }
+        .likert-option.selected-2 { background: #F97316; border-color: #F97316; }
+        .likert-option.selected-3 { background: #EAB308; border-color: #EAB308; }
+        .likert-option.selected-4 { background: #22C55E; border-color: #22C55E; }
+        .likert-option.selected-5 { background: #10B981; border-color: #10B981; }
+
+        .likert-sublabels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
             font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .comparison-option.selected .option-label {
-            color: var(--primary-dark);
-        }
-
-        .option-text {
-            font-size: 1rem;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        .comparison-option.selected .option-text {
-            font-weight: 500;
-        }
-
-        .vs-divider {
-            text-align: center;
             color: var(--text-light);
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 4px 0;
         }
 
         .nav-buttons {
@@ -455,11 +460,47 @@
             opacity: 1;
         }
 
+        /* Score interpretation legend */
+        .score-legend {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+        }
+
+        .score-legend h4 {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.high { background: #10B981; }
+        .legend-dot.medium { background: #EAB308; }
+        .legend-dot.low { background: #EF4444; }
+
         @media (max-width: 480px) {
             .container { padding: 12px; }
             .card { padding: 20px; }
-            .comparison-option { padding: 16px; }
-            .option-text { font-size: 0.95rem; }
+            .statement-text { font-size: 1.05rem; }
+            .likert-option { max-width: 50px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -477,34 +518,38 @@
         <!-- Intro -->
         <div class="screen active" id="introScreen">
             <div class="card intro-card">
-                <h2>Ontdek Je Sterke Punten</h2>
-                <p>Deze assessment meet 11 belangrijke competenties door middel van vergelijkende keuzes.</p>
+                <h2>Ontdek Je Competenties</h2>
+                <p>Deze assessment meet 11 belangrijke competenties op basis van gedragsstellingen.</p>
 
                 <div class="intro-info">
                     <h4>Hoe werkt het?</h4>
                     <ul>
-                        <li>Je krijgt steeds twee stellingen te zien</li>
-                        <li>Kies welke stelling het beste bij jou past</li>
-                        <li>Er is geen goed of fout - kies wat het meest klopt</li>
-                        <li>De test duurt ongeveer 5-7 minuten</li>
+                        <li>Je krijgt 44 stellingen over werkgedrag te zien</li>
+                        <li>Geef aan in hoeverre elke stelling op jou van toepassing is</li>
+                        <li>Elke competentie wordt onafhankelijk gemeten</li>
+                        <li>De test duurt ongeveer 8-10 minuten</li>
                     </ul>
                 </div>
 
                 <div class="intro-info">
                     <h4>Gemeten competenties</h4>
                     <ul>
-                        <li>Ondernemerschap & Proactiviteit</li>
+                        <li>Ondernemerschap</li>
                         <li>Visie & Strategisch denken</li>
                         <li>Analytisch vermogen</li>
-                        <li>Besluitvaardigheid & Resultaatgerichtheid</li>
-                        <li>Sensitiviteit & Samenwerken</li>
-                        <li>Aanpassingsvermogen & Zelfeffectiviteit</li>
+                        <li>Economische besluitvaardigheid</li>
+                        <li>Sensitiviteit</li>
+                        <li>Aanpassingsvermogen</li>
                         <li>Intrinsieke motivatie</li>
+                        <li>Samenwerken</li>
+                        <li>Zelfeffectiviteit</li>
+                        <li>Proactiviteit</li>
+                        <li>Resultaatgerichtheid</li>
                     </ul>
                 </div>
 
                 <p style="font-size: 0.85rem; margin-top: 20px;">
-                    Tip: Kies op basis van hoe je daadwerkelijk handelt, niet hoe je zou willen zijn.
+                    Tip: Beantwoord op basis van hoe je daadwerkelijk bent, niet hoe je zou willen zijn.
                 </p>
 
                 <button class="btn btn-primary" onclick="startAssessment()" style="margin-top: 20px;">
@@ -516,11 +561,25 @@
         <!-- Question -->
         <div class="screen" id="questionScreen">
             <div class="card question-card">
-                <div class="question-number" id="questionNumber">Vraag 1 van 33</div>
-                <p class="question-prompt">Welke stelling past beter bij jou?</p>
+                <div class="question-number" id="questionNumber">Vraag 1 van 44</div>
+                <p class="statement-text" id="statementText"></p>
 
-                <div class="comparison-options" id="comparisonOptions">
-                    <!-- Options inserted here -->
+                <div class="likert-container">
+                    <div class="likert-labels">
+                        <span>Helemaal niet</span>
+                        <span>Helemaal wel</span>
+                    </div>
+                    <div class="likert-scale" id="likertScale">
+                        <div class="likert-option" onclick="selectAnswer(1)">1</div>
+                        <div class="likert-option" onclick="selectAnswer(2)">2</div>
+                        <div class="likert-option" onclick="selectAnswer(3)">3</div>
+                        <div class="likert-option" onclick="selectAnswer(4)">4</div>
+                        <div class="likert-option" onclick="selectAnswer(5)">5</div>
+                    </div>
+                    <div class="likert-sublabels">
+                        <span>Niet van toepassing</span>
+                        <span>Volledig van toepassing</span>
+                    </div>
                 </div>
             </div>
 
@@ -542,8 +601,26 @@
         <!-- Results -->
         <div class="screen" id="resultsScreen">
             <div class="results-header">
-                <h2>Jouw Top 5 Competenties</h2>
-                <p style="color: var(--text-light); font-size: 0.9rem;">Gerangschikt op basis van jouw antwoorden</p>
+                <h2>Jouw Competentie Profiel</h2>
+                <p style="color: var(--text-light); font-size: 0.9rem;">Gerangschikt op basis van jouw scores</p>
+            </div>
+
+            <div class="score-legend">
+                <h4>Score interpretatie</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-dot high"></div>
+                        <span>70-100%: Sterk ontwikkeld</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot medium"></div>
+                        <span>40-69%: Gemiddeld</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot low"></div>
+                        <span>0-39%: Ontwikkelpunt</span>
+                    </div>
+                </div>
             </div>
 
             <div id="topResults"></div>
@@ -630,168 +707,81 @@
             }
         };
 
-        // Paired comparisons - elke competentie komt 6x voor voor betrouwbare meting
-        // Items gebaseerd op gedragsindicatoren uit de literatuur
-        const comparisons = [
-            // Ondernemerschap vs anderen
-            {
-                a: { text: "Ik zie regelmatig kansen die anderen over het hoofd zien", comp: "ondernemerschap" },
-                b: { text: "Ik analyseer situaties grondig voordat ik conclusies trek", comp: "intelligentie" }
-            },
-            {
-                a: { text: "Ik durf risico's te nemen als de potentiële opbrengst groot is", comp: "ondernemerschap" },
-                b: { text: "Ik zorg dat mijn beslissingen financieel onderbouwd zijn", comp: "besluitvaardigheid" }
-            },
-            {
-                a: { text: "Ik start liever iets nieuws dan dat ik bestaande processen optimaliseer", comp: "ondernemerschap" },
-                b: { text: "Ik pas me makkelijk aan wanneer plannen veranderen", comp: "aanpassingsvermogen" }
-            },
+        // 44 gedragsstellingen - 4 per competentie
+        // Per competentie: 2 positief geformuleerd, 2 negatief (reverse) geformuleerd
+        // reverse: true betekent dat de score omgekeerd moet worden (1→5, 2→4, etc.)
+        const statements = [
+            // Ondernemerschap (4 stellingen)
+            { text: "Ik zie regelmatig kansen die anderen over het hoofd zien", comp: "ondernemerschap", reverse: false },
+            { text: "Ik durf risico's te nemen als de potentiële opbrengst groot is", comp: "ondernemerschap", reverse: false },
+            { text: "Ik vermijd liever risico's, ook als er kansen liggen", comp: "ondernemerschap", reverse: true },
+            { text: "Ik wacht liever af tot anderen het voortouw nemen bij nieuwe initiatieven", comp: "ondernemerschap", reverse: true },
 
-            // Visie vs anderen
-            {
-                a: { text: "Ik denk vaak na over waar we over 5 jaar willen staan", comp: "visie" },
-                b: { text: "Ik focus me op het behalen van de doelen van vandaag", comp: "resultaatgerichtheid" }
-            },
-            {
-                a: { text: "Ik kan anderen inspireren met een beeld van de toekomst", comp: "visie" },
-                b: { text: "Ik merk snel wat anderen voelen of nodig hebben", comp: "sensitiviteit" }
-            },
-            {
-                a: { text: "Ik verbind dagelijkse taken aan grotere, strategische doelen", comp: "visie" },
-                b: { text: "Ik handel vanuit wat ik persoonlijk belangrijk vind", comp: "motivatie" }
-            },
+            // Visie & Strategisch denken (4 stellingen)
+            { text: "Ik denk vaak na over waar we over 5 jaar willen staan", comp: "visie", reverse: false },
+            { text: "Ik verbind dagelijkse taken aan grotere, strategische doelen", comp: "visie", reverse: false },
+            { text: "Ik focus me vooral op wat er vandaag moet gebeuren, niet op de lange termijn", comp: "visie", reverse: true },
+            { text: "Het valt me moeilijk om het grote geheel te overzien", comp: "visie", reverse: true },
 
-            // Intelligentie vs anderen
-            {
-                a: { text: "Ik kan nieuwe, complexe informatie snel doorgronden", comp: "intelligentie" },
-                b: { text: "Ik werk graag samen met anderen aan een gezamenlijk doel", comp: "samenwerken" }
-            },
-            {
-                a: { text: "Ik los problemen op door logisch te redeneren", comp: "intelligentie" },
-                b: { text: "Ik vertrouw erop dat ik de meeste uitdagingen aankan", comp: "zelfeffectiviteit" }
-            },
-            {
-                a: { text: "Ik zie snel patronen en verbanden in complexe situaties", comp: "intelligentie" },
-                b: { text: "Ik onderneem actie zonder te wachten op instructies", comp: "proactiviteit" }
-            },
+            // Analytisch vermogen (4 stellingen)
+            { text: "Ik kan nieuwe, complexe informatie snel doorgronden", comp: "intelligentie", reverse: false },
+            { text: "Ik zie snel patronen en verbanden in complexe situaties", comp: "intelligentie", reverse: false },
+            { text: "Ik vind het lastig om logisch te redeneren bij ingewikkelde vraagstukken", comp: "intelligentie", reverse: true },
+            { text: "Ik heb moeite met het analyseren van grote hoeveelheden informatie", comp: "intelligentie", reverse: true },
 
-            // Besluitvaardigheid vs anderen
-            {
-                a: { text: "Ik weeg kosten en baten zorgvuldig af voordat ik beslis", comp: "besluitvaardigheid" },
-                b: { text: "Ik houd rekening met hoe mijn beslissingen anderen raken", comp: "sensitiviteit" }
-            },
-            {
-                a: { text: "Ik neem liever snel een beslissing dan lang te twijfelen", comp: "besluitvaardigheid" },
-                b: { text: "Ik blijf effectief functioneren als omstandigheden veranderen", comp: "aanpassingsvermogen" }
-            },
-            {
-                a: { text: "Ik maak keuzes op basis van data en onderbouwde argumenten", comp: "besluitvaardigheid" },
-                b: { text: "Ik word gedreven door wat ik zinvol en betekenisvol vind", comp: "motivatie" }
-            },
+            // Economische besluitvaardigheid (4 stellingen)
+            { text: "Ik weeg kosten en baten zorgvuldig af voordat ik beslis", comp: "besluitvaardigheid", reverse: false },
+            { text: "Ik neem tijdig beslissingen, ook als niet alle informatie beschikbaar is", comp: "besluitvaardigheid", reverse: false },
+            { text: "Ik stel beslissingen vaak uit omdat ik meer zekerheid wil", comp: "besluitvaardigheid", reverse: true },
+            { text: "Ik vergeet regelmatig de financiële consequenties mee te wegen", comp: "besluitvaardigheid", reverse: true },
 
-            // Sensitiviteit vs anderen
-            {
-                a: { text: "Ik voel aan wanneer iemand ergens mee zit, ook als die persoon het niet zegt", comp: "sensitiviteit" },
-                b: { text: "Ik help collega's graag om samen een beter resultaat te bereiken", comp: "samenwerken" }
-            },
-            {
-                a: { text: "Ik stem mijn communicatie af op wat de ander nodig heeft", comp: "sensitiviteit" },
-                b: { text: "Ik ga ervan uit dat ik nieuwe vaardigheden kan leren als dat nodig is", comp: "zelfeffectiviteit" }
-            },
-            {
-                a: { text: "Ik merk subtiele signalen op in hoe mensen reageren", comp: "sensitiviteit" },
-                b: { text: "Ik signaleer problemen voordat ze urgent worden", comp: "proactiviteit" }
-            },
+            // Sensitiviteit (4 stellingen)
+            { text: "Ik merk snel wat anderen voelen of nodig hebben", comp: "sensitiviteit", reverse: false },
+            { text: "Ik stem mijn communicatie af op wat de ander nodig heeft", comp: "sensitiviteit", reverse: false },
+            { text: "Ik heb moeite om subtiele emotionele signalen op te pikken", comp: "sensitiviteit", reverse: true },
+            { text: "Ik vergeet soms rekening te houden met hoe anderen zich voelen", comp: "sensitiviteit", reverse: true },
 
-            // Aanpassingsvermogen vs anderen
-            {
-                a: { text: "Ik zie verandering als een kans, niet als een bedreiging", comp: "aanpassingsvermogen" },
-                b: { text: "Ik haal energie uit het bereiken van concrete doelen", comp: "resultaatgerichtheid" }
-            },
-            {
-                a: { text: "Ik schakel makkelijk tussen verschillende taken en prioriteiten", comp: "aanpassingsvermogen" },
-                b: { text: "Ik spot kansen om zaken commercieel te benutten", comp: "ondernemerschap" }
-            },
-            {
-                a: { text: "Ik blijf kalm en effectief als plannen plotseling veranderen", comp: "aanpassingsvermogen" },
-                b: { text: "Ik denk na over de langetermijngevolgen van beslissingen", comp: "visie" }
-            },
+            // Aanpassingsvermogen (4 stellingen)
+            { text: "Ik zie verandering als een kans, niet als een bedreiging", comp: "aanpassingsvermogen", reverse: false },
+            { text: "Ik blijf kalm en effectief als plannen plotseling veranderen", comp: "aanpassingsvermogen", reverse: false },
+            { text: "Ik heb moeite met onverwachte veranderingen in mijn werk", comp: "aanpassingsvermogen", reverse: true },
+            { text: "Ik voel me ongemakkelijk als ik mijn aanpak moet aanpassen", comp: "aanpassingsvermogen", reverse: true },
 
-            // Motivatie vs anderen
-            {
-                a: { text: "Ik werk het hardst aan taken die ik persoonlijk waardevol vind", comp: "motivatie" },
-                b: { text: "Ik deel mijn kennis graag met teamleden", comp: "samenwerken" }
-            },
-            {
-                a: { text: "Ik blijf gemotiveerd ook zonder externe beloningen of erkenning", comp: "motivatie" },
-                b: { text: "Ik geloof dat ik met inzet de meeste obstakels kan overwinnen", comp: "zelfeffectiviteit" }
-            },
-            {
-                a: { text: "Ik zoek werk dat aansluit bij mijn persoonlijke waarden", comp: "motivatie" },
-                b: { text: "Ik neem het voortouw zonder dat iemand mij dat vraagt", comp: "proactiviteit" }
-            },
+            // Intrinsieke motivatie (4 stellingen)
+            { text: "Ik werk het hardst aan taken die ik persoonlijk waardevol vind", comp: "motivatie", reverse: false },
+            { text: "Ik blijf gemotiveerd ook zonder externe beloningen of erkenning", comp: "motivatie", reverse: false },
+            { text: "Ik heb externe prikkels nodig om gemotiveerd te blijven", comp: "motivatie", reverse: true },
+            { text: "Ik doe mijn werk vooral voor het salaris en de zekerheid", comp: "motivatie", reverse: true },
 
-            // Samenwerken vs anderen
-            {
-                a: { text: "Ik stel het teambelang soms boven mijn eigen belang", comp: "samenwerken" },
-                b: { text: "Ik meet succes af aan concrete, meetbare resultaten", comp: "resultaatgerichtheid" }
-            },
-            {
-                a: { text: "Ik zorg dat iedereen in het team kan bijdragen", comp: "samenwerken" },
-                b: { text: "Ik durf te handelen ook als de uitkomst onzeker is", comp: "ondernemerschap" }
-            },
-            {
-                a: { text: "Ik ondersteun collega's actief bij hun werk", comp: "samenwerken" },
-                b: { text: "Ik houd het einddoel voor ogen bij alles wat ik doe", comp: "visie" }
-            },
+            // Samenwerken (4 stellingen)
+            { text: "Ik help collega's graag om samen een beter resultaat te bereiken", comp: "samenwerken", reverse: false },
+            { text: "Ik stel het teambelang soms boven mijn eigen belang", comp: "samenwerken", reverse: false },
+            { text: "Ik werk liever alleen dan in een team", comp: "samenwerken", reverse: true },
+            { text: "Ik vind het lastig om kennis en informatie te delen met anderen", comp: "samenwerken", reverse: true },
 
-            // Zelfeffectiviteit vs anderen
-            {
-                a: { text: "Ik ga nieuwe uitdagingen met vertrouwen tegemoet", comp: "zelfeffectiviteit" },
-                b: { text: "Ik analyseer informatie systematisch om tot inzichten te komen", comp: "intelligentie" }
-            },
-            {
-                a: { text: "Ik herstel snel als iets niet lukt en probeer het opnieuw", comp: "zelfeffectiviteit" },
-                b: { text: "Ik houd bij beslissingen rekening met de financiële impact", comp: "besluitvaardigheid" }
-            },
-            {
-                a: { text: "Ik twijfel zelden aan mijn vermogen om taken uit te voeren", comp: "zelfeffectiviteit" },
-                b: { text: "Ik voel aan wat er in een groep speelt", comp: "sensitiviteit" }
-            },
+            // Zelfeffectiviteit (4 stellingen)
+            { text: "Ik ga nieuwe uitdagingen met vertrouwen tegemoet", comp: "zelfeffectiviteit", reverse: false },
+            { text: "Ik herstel snel als iets niet lukt en probeer het opnieuw", comp: "zelfeffectiviteit", reverse: false },
+            { text: "Ik twijfel vaak aan mijn eigen kunnen bij moeilijke taken", comp: "zelfeffectiviteit", reverse: true },
+            { text: "Tegenslagen hebben lang invloed op mijn zelfvertrouwen", comp: "zelfeffectiviteit", reverse: true },
 
-            // Proactiviteit vs anderen
-            {
-                a: { text: "Ik wacht niet af, maar onderneem zelf actie", comp: "proactiviteit" },
-                b: { text: "Ik pas mijn aanpak aan als de situatie daarom vraagt", comp: "aanpassingsvermogen" }
-            },
-            {
-                a: { text: "Ik voorkom problemen door er vroeg op te anticiperen", comp: "proactiviteit" },
-                b: { text: "Ik doe mijn werk omdat ik het zinvol vind, niet voor de beloning", comp: "motivatie" }
-            },
-            {
-                a: { text: "Ik zie wat er moet gebeuren en pak het op", comp: "proactiviteit" },
-                b: { text: "Ik werk effectief samen, ook met mensen die anders denken", comp: "samenwerken" }
-            },
+            // Proactiviteit (4 stellingen)
+            { text: "Ik wacht niet af, maar onderneem zelf actie", comp: "proactiviteit", reverse: false },
+            { text: "Ik signaleer problemen voordat ze urgent worden", comp: "proactiviteit", reverse: false },
+            { text: "Ik wacht meestal op instructies voordat ik aan de slag ga", comp: "proactiviteit", reverse: true },
+            { text: "Ik reageer vooral op problemen in plaats van ze te voorkomen", comp: "proactiviteit", reverse: true },
 
-            // Resultaatgerichtheid vs anderen
-            {
-                a: { text: "Ik stel duidelijke, meetbare doelen voor mezelf", comp: "resultaatgerichtheid" },
-                b: { text: "Ik durf beslissingen te nemen met beperkte informatie", comp: "ondernemerschap" }
-            },
-            {
-                a: { text: "Ik laat me niet afleiden van het behalen van mijn doelen", comp: "resultaatgerichtheid" },
-                b: { text: "Ik denk strategisch na over de koers die we moeten varen", comp: "visie" }
-            },
-            {
-                a: { text: "Ik bewaar overzicht en focus op wat echt resultaat oplevert", comp: "resultaatgerichtheid" },
-                b: { text: "Ik vind logische oplossingen voor complexe vraagstukken", comp: "intelligentie" }
-            }
+            // Resultaatgerichtheid (4 stellingen)
+            { text: "Ik stel duidelijke, meetbare doelen voor mezelf", comp: "resultaatgerichtheid", reverse: false },
+            { text: "Ik laat me niet afleiden van het behalen van mijn doelen", comp: "resultaatgerichtheid", reverse: false },
+            { text: "Ik raak soms de focus kwijt en vergeet mijn oorspronkelijke doel", comp: "resultaatgerichtheid", reverse: true },
+            { text: "Het stellen van concrete doelen vind ik niet zo belangrijk", comp: "resultaatgerichtheid", reverse: true }
         ];
 
         // State
         let currentQuestion = 0;
         let answers = [];
-        let shuffledComparisons = [];
+        let shuffledStatements = [];
 
         function shuffleArray(arr) {
             const shuffled = [...arr];
@@ -803,15 +793,9 @@
         }
 
         function startAssessment() {
-            // Shuffle comparisons and randomly swap A/B within each
-            shuffledComparisons = shuffleArray(comparisons).map(comp => {
-                if (Math.random() > 0.5) {
-                    return { a: comp.b, b: comp.a };
-                }
-                return { ...comp };
-            });
-
-            answers = new Array(shuffledComparisons.length).fill(null);
+            // Shuffle statements for randomization
+            shuffledStatements = shuffleArray(statements);
+            answers = new Array(shuffledStatements.length).fill(null);
             currentQuestion = 0;
 
             document.getElementById('introScreen').classList.remove('active');
@@ -823,39 +807,47 @@
         }
 
         function renderQuestion() {
-            const comparison = shuffledComparisons[currentQuestion];
+            const statement = shuffledStatements[currentQuestion];
 
             document.getElementById('questionNumber').textContent =
-                `Vraag ${currentQuestion + 1} van ${shuffledComparisons.length}`;
+                `Vraag ${currentQuestion + 1} van ${shuffledStatements.length}`;
 
-            const progress = (currentQuestion / shuffledComparisons.length) * 100;
+            const progress = (currentQuestion / shuffledStatements.length) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
             document.getElementById('progressText').textContent = `${Math.round(progress)}% voltooid`;
 
-            const container = document.getElementById('comparisonOptions');
-            container.innerHTML = `
-                <div class="comparison-option ${answers[currentQuestion] === 'a' ? 'selected' : ''}" onclick="selectOption('a')">
-                    <div class="option-label">Optie A</div>
-                    <div class="option-text">${comparison.a.text}</div>
-                </div>
-                <div class="vs-divider">— of —</div>
-                <div class="comparison-option ${answers[currentQuestion] === 'b' ? 'selected' : ''}" onclick="selectOption('b')">
-                    <div class="option-label">Optie B</div>
-                    <div class="option-text">${comparison.b.text}</div>
-                </div>
-            `;
+            document.getElementById('statementText').textContent = statement.text;
+
+            // Reset and update likert scale
+            const options = document.querySelectorAll('.likert-option');
+            options.forEach(opt => {
+                opt.className = 'likert-option';
+            });
+
+            if (answers[currentQuestion] !== null) {
+                const selectedValue = answers[currentQuestion];
+                options[selectedValue - 1].classList.add('selected', `selected-${selectedValue}`);
+            }
 
             document.getElementById('prevBtn').style.visibility =
                 currentQuestion === 0 ? 'hidden' : 'visible';
 
             document.getElementById('nextBtn').disabled = answers[currentQuestion] === null;
             document.getElementById('nextBtn').textContent =
-                currentQuestion === shuffledComparisons.length - 1 ? 'Resultaten' : 'Volgende';
+                currentQuestion === shuffledStatements.length - 1 ? 'Resultaten' : 'Volgende';
         }
 
-        function selectOption(option) {
-            answers[currentQuestion] = option;
-            renderQuestion();
+        function selectAnswer(value) {
+            answers[currentQuestion] = value;
+
+            // Update visual selection
+            const options = document.querySelectorAll('.likert-option');
+            options.forEach(opt => {
+                opt.className = 'likert-option';
+            });
+            options[value - 1].classList.add('selected', `selected-${value}`);
+
+            document.getElementById('nextBtn').disabled = false;
         }
 
         function previousQuestion() {
@@ -868,7 +860,7 @@
         function nextQuestion() {
             if (answers[currentQuestion] === null) return;
 
-            if (currentQuestion < shuffledComparisons.length - 1) {
+            if (currentQuestion < shuffledStatements.length - 1) {
                 currentQuestion++;
                 renderQuestion();
             } else {
@@ -886,37 +878,52 @@
         }
 
         function calculateResults() {
-            // Calculate scores
+            // Calculate scores per competency
+            // For each competency, we have 4 statements, each scored 1-5
+            // Reverse items: 1→5, 2→4, 3→3, 4→2, 5→1
+            // Final score per competency = average of 4 items, normalized to 0-100%
+
             const scores = {};
-            Object.keys(competencies).forEach(c => scores[c] = 0);
+            const counts = {};
 
-            shuffledComparisons.forEach((comparison, index) => {
-                const answer = answers[index];
-                if (answer) {
-                    const chosen = comparison[answer];
-                    const notChosen = comparison[answer === 'a' ? 'b' : 'a'];
-                    scores[chosen.comp] += 1;
-                    // Niet-gekozen krijgt geen punten (niet negatief, want dat kan frustratie geven)
+            Object.keys(competencies).forEach(c => {
+                scores[c] = 0;
+                counts[c] = 0;
+            });
+
+            shuffledStatements.forEach((statement, index) => {
+                let score = answers[index];
+                if (score === null) return;
+
+                // Apply reverse scoring if needed
+                if (statement.reverse) {
+                    score = 6 - score; // 1→5, 2→4, 3→3, 4→2, 5→1
                 }
+
+                scores[statement.comp] += score;
+                counts[statement.comp]++;
             });
 
-            // Bereken max mogelijke score per competentie
-            const maxPerComp = {};
-            Object.keys(competencies).forEach(c => maxPerComp[c] = 0);
-            shuffledComparisons.forEach(comp => {
-                maxPerComp[comp.a.comp]++;
-                maxPerComp[comp.b.comp]++;
-            });
+            // Calculate percentage for each competency
+            // Each competency has 4 items, each scored 1-5
+            // Min total = 4, Max total = 20
+            // Normalize to 0-100%
+            const results = Object.entries(scores).map(([key, total]) => {
+                const count = counts[key];
+                if (count === 0) return { key, percentage: 0 };
 
-            // Sorteer op score
-            const sorted = Object.entries(scores)
-                .map(([key, score]) => ({
+                const average = total / count; // Will be 1-5
+                // Convert 1-5 scale to 0-100%
+                const percentage = Math.round(((average - 1) / 4) * 100);
+
+                return {
                     key,
-                    score,
-                    max: maxPerComp[key],
-                    percentage: Math.round((score / maxPerComp[key]) * 100)
-                }))
-                .sort((a, b) => b.percentage - a.percentage);
+                    score: total,
+                    count,
+                    average: average.toFixed(2),
+                    percentage
+                };
+            }).sort((a, b) => b.percentage - a.percentage);
 
             // Render results
             document.getElementById('processingScreen').classList.remove('active');
@@ -925,14 +932,25 @@
             const topContainer = document.getElementById('topResults');
             const allContainer = document.getElementById('allResults');
 
-            topContainer.innerHTML = sorted.slice(0, 5).map((item, i) => renderResultItem(item, i + 1)).join('');
-            allContainer.innerHTML = sorted.slice(5).map((item, i) => renderResultItem(item, i + 6)).join('');
+            topContainer.innerHTML = results.slice(0, 5).map((item, i) => renderResultItem(item, i + 1)).join('');
+            allContainer.innerHTML = results.slice(5).map((item, i) => renderResultItem(item, i + 6)).join('');
 
-            window.assessmentResults = sorted;
+            window.assessmentResults = results;
         }
 
         function renderResultItem(item, rank) {
             const comp = competencies[item.key];
+
+            // Determine score bar color based on percentage
+            let barColor;
+            if (item.percentage >= 70) {
+                barColor = 'linear-gradient(90deg, #10B981, #059669)';
+            } else if (item.percentage >= 40) {
+                barColor = 'linear-gradient(90deg, #EAB308, #CA8A04)';
+            } else {
+                barColor = 'linear-gradient(90deg, #EF4444, #DC2626)';
+            }
+
             return `
                 <div class="result-item">
                     <div class="result-header">
@@ -941,7 +959,7 @@
                         <div class="result-score">${item.percentage}%</div>
                     </div>
                     <div class="score-bar-container">
-                        <div class="score-bar" style="width: ${item.percentage}%"></div>
+                        <div class="score-bar" style="width: ${item.percentage}%; background: ${barColor}"></div>
                     </div>
                     <div class="result-description">${comp.definition}</div>
                 </div>
@@ -965,7 +983,8 @@
 
             window.assessmentResults.forEach((item, i) => {
                 const comp = competencies[item.key];
-                text += `${i + 1}. ${comp.name} (${item.percentage}%)\n`;
+                const level = item.percentage >= 70 ? "Sterk" : item.percentage >= 40 ? "Gemiddeld" : "Ontwikkelpunt";
+                text += `${i + 1}. ${comp.name} - ${item.percentage}% (${level})\n`;
                 text += `   ${comp.definition}\n\n`;
             });
 
@@ -983,22 +1002,41 @@
 <style>
 body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:20px;color:#333}
 h1{color:#4F46E5;border-bottom:2px solid #4F46E5;padding-bottom:10px}
+.legend{background:#f8fafc;padding:12px 16px;border-radius:8px;margin-bottom:24px;font-size:13px}
+.legend span{margin-right:16px}
+.high{color:#10B981}
+.medium{color:#EAB308}
+.low{color:#EF4444}
 .item{margin:20px 0;padding:15px;background:#f8fafc;border-left:4px solid #4F46E5;border-radius:0 8px 8px 0}
+.item.high{border-left-color:#10B981}
+.item.medium{border-left-color:#EAB308}
+.item.low{border-left-color:#EF4444}
 .item h3{margin:0 0 8px 0;display:flex;align-items:center;gap:10px}
 .rank{background:#4F46E5;color:white;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
-.score{margin-left:auto;color:#4F46E5;font-weight:bold}
+.score{margin-left:auto;font-weight:bold}
 .bar{background:#e2e8f0;height:6px;border-radius:3px;margin:10px 0}
-.bar-fill{background:linear-gradient(90deg,#4F46E5,#10B981);height:100%;border-radius:3px}
+.bar-fill{height:100%;border-radius:3px}
+.bar-fill.high{background:#10B981}
+.bar-fill.medium{background:#EAB308}
+.bar-fill.low{background:#EF4444}
 p{margin:0;color:#64748b;font-size:14px}
 .date{color:#94a3b8;font-size:12px;margin-top:30px}
 </style></head><body>
 <h1>Competentie Profiel</h1>
-${results.map((item, i) => `
-<div class="item">
-<h3><span class="rank">${i+1}</span>${competencies[item.key].name}<span class="score">${item.percentage}%</span></h3>
-<div class="bar"><div class="bar-fill" style="width:${item.percentage}%"></div></div>
+<div class="legend">
+<span class="high">● 70-100%: Sterk ontwikkeld</span>
+<span class="medium">● 40-69%: Gemiddeld</span>
+<span class="low">● 0-39%: Ontwikkelpunt</span>
+</div>
+${results.map((item, i) => {
+    const level = item.percentage >= 70 ? 'high' : item.percentage >= 40 ? 'medium' : 'low';
+    return `
+<div class="item ${level}">
+<h3><span class="rank">${i+1}</span>${competencies[item.key].name}<span class="score ${level}">${item.percentage}%</span></h3>
+<div class="bar"><div class="bar-fill ${level}" style="width:${item.percentage}%"></div></div>
 <p>${competencies[item.key].definition}</p>
-</div>`).join('')}
+</div>`;
+}).join('')}
 <p class="date">Gegenereerd op ${new Date().toLocaleDateString('nl-NL')}</p>
 </body></html>`;
 
