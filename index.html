@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Competentie Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --secondary: #10B981;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .progress-container {
+            background: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .intro-card {
+            text-align: center;
+        }
+
+        .intro-info {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .intro-info h4 {
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .intro-info ul {
+            list-style: none;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .intro-info li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .intro-info li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-icon {
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border-radius: 12px;
+        }
+
+        /* Question styling */
+        .question-card {
+            padding: 24px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-prompt {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin-bottom: 24px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .comparison-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comparison-option {
+            padding: 20px;
+            background: var(--bg);
+            border: 3px solid transparent;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .comparison-option:hover {
+            border-color: var(--primary-light);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .comparison-option.selected {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.08);
+        }
+
+        .option-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-option.selected .option-label {
+            color: var(--primary-dark);
+        }
+
+        .option-text {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .comparison-option.selected .option-text {
+            font-weight: 500;
+        }
+
+        .vs-divider {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 4px 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .nav-buttons .btn {
+            flex: 1;
+        }
+
+        /* Processing */
+        .processing-card {
+            text-align: center;
+            padding: 48px 28px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Results */
+        .results-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .results-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .result-item {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .result-rank {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .result-item:nth-child(1) .result-rank { background: linear-gradient(135deg, #FFD700, #FFA500); color: #333; }
+        .result-item:nth-child(2) .result-rank { background: linear-gradient(135deg, #94A3B8, #64748B); }
+        .result-item:nth-child(3) .result-rank { background: linear-gradient(135deg, #CD7F32, #8B4513); }
+        .result-item:nth-child(4) .result-rank { background: var(--secondary); }
+        .result-item:nth-child(5) .result-rank { background: var(--primary); }
+
+        .result-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+            flex-grow: 1;
+        }
+
+        .result-score {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .score-bar-container {
+            background: var(--border);
+            border-radius: 6px;
+            height: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .score-bar {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.6s ease;
+        }
+
+        .result-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* Full results toggle */
+        .show-all-btn {
+            width: 100%;
+            margin-top: 16px;
+            padding: 14px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .show-all-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .all-results {
+            display: none;
+            margin-top: 16px;
+        }
+
+        .all-results.show {
+            display: block;
+        }
+
+        .all-results .result-item {
+            opacity: 0.85;
+        }
+
+        .all-results .result-rank {
+            background: var(--text-light);
+        }
+
+        /* Share section */
+        .share-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .share-section h4 {
+            margin-bottom: 12px;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-share {
+            padding: 10px 18px;
+            font-size: 0.85rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            .card { padding: 20px; }
+            .comparison-option { padding: 16px; }
+            .option-text { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Competentie Assessment</h1>
+        </header>
+
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText" style="display: none;"></div>
+
+        <!-- Intro -->
+        <div class="screen active" id="introScreen">
+            <div class="card intro-card">
+                <h2>Ontdek Je Sterke Punten</h2>
+                <p>Deze assessment meet 11 belangrijke competenties door middel van vergelijkende keuzes.</p>
+
+                <div class="intro-info">
+                    <h4>Hoe werkt het?</h4>
+                    <ul>
+                        <li>Je krijgt steeds twee stellingen te zien</li>
+                        <li>Kies welke stelling het beste bij jou past</li>
+                        <li>Er is geen goed of fout - kies wat het meest klopt</li>
+                        <li>De test duurt ongeveer 5-7 minuten</li>
+                    </ul>
+                </div>
+
+                <div class="intro-info">
+                    <h4>Gemeten competenties</h4>
+                    <ul>
+                        <li>Ondernemerschap & Proactiviteit</li>
+                        <li>Visie & Strategisch denken</li>
+                        <li>Analytisch vermogen</li>
+                        <li>Besluitvaardigheid & Resultaatgerichtheid</li>
+                        <li>Sensitiviteit & Samenwerken</li>
+                        <li>Aanpassingsvermogen & Zelfeffectiviteit</li>
+                        <li>Intrinsieke motivatie</li>
+                    </ul>
+                </div>
+
+                <p style="font-size: 0.85rem; margin-top: 20px;">
+                    Tip: Kies op basis van hoe je daadwerkelijk handelt, niet hoe je zou willen zijn.
+                </p>
+
+                <button class="btn btn-primary" onclick="startAssessment()" style="margin-top: 20px;">
+                    Start Assessment
+                </button>
+            </div>
+        </div>
+
+        <!-- Question -->
+        <div class="screen" id="questionScreen">
+            <div class="card question-card">
+                <div class="question-number" id="questionNumber">Vraag 1 van 33</div>
+                <p class="question-prompt">Welke stelling past beter bij jou?</p>
+
+                <div class="comparison-options" id="comparisonOptions">
+                    <!-- Options inserted here -->
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary btn-icon" id="prevBtn" onclick="previousQuestion()">←</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Volgende</button>
+            </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="screen" id="processingScreen">
+            <div class="card processing-card">
+                <div class="spinner"></div>
+                <h2>Resultaten berekenen...</h2>
+                <p>Je antwoorden worden geanalyseerd</p>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="screen" id="resultsScreen">
+            <div class="results-header">
+                <h2>Jouw Top 5 Competenties</h2>
+                <p style="color: var(--text-light); font-size: 0.9rem;">Gerangschikt op basis van jouw antwoorden</p>
+            </div>
+
+            <div id="topResults"></div>
+
+            <button class="show-all-btn" id="showAllBtn" onclick="toggleAllResults()">
+                Toon alle 11 competenties
+            </button>
+
+            <div class="all-results" id="allResults"></div>
+
+            <div class="share-section">
+                <h4>Bewaar je resultaten</h4>
+                <div class="share-buttons">
+                    <button class="btn btn-secondary btn-share" onclick="copyResults()">Kopieer</button>
+                    <button class="btn btn-secondary btn-share" onclick="downloadResults()">Download</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" onclick="restartAssessment()">Opnieuw</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 11 competenties met definities
+        const competencies = {
+            ondernemerschap: {
+                name: "Ondernemerschap",
+                definition: "Kansen signaleren en benutten, en risico durven nemen om doelen te bereiken.",
+                behavior: "Ziet commerciële mogelijkheden, neemt initiatief voor nieuwe projecten, durft berekende risico's te nemen."
+            },
+            visie: {
+                name: "Visie & Strategisch denken",
+                definition: "De lange termijn kunnen overzien en richting bepalen voor jezelf en anderen.",
+                behavior: "Denkt vooruit, ziet het grote geheel, verbindt dagelijkse acties aan langetermijndoelen."
+            },
+            intelligentie: {
+                name: "Analytisch vermogen",
+                definition: "Logisch kunnen redeneren en nieuwe, complexe problemen effectief oplossen.",
+                behavior: "Analyseert informatie snel, legt verbanden, komt tot onderbouwde conclusies."
+            },
+            besluitvaardigheid: {
+                name: "Economische besluitvaardigheid",
+                definition: "Onderbouwde keuzes maken met oog voor middelen, belangen en impact.",
+                behavior: "Weegt kosten en baten af, neemt tijdig beslissingen, houdt rekening met consequenties."
+            },
+            sensitiviteit: {
+                name: "Sensitiviteit",
+                definition: "Oog hebben voor gevoelens en behoeften van anderen en daar rekening mee houden.",
+                behavior: "Pikt signalen op, toont empathie, stemt gedrag af op wat anderen nodig hebben."
+            },
+            aanpassingsvermogen: {
+                name: "Aanpassingsvermogen",
+                definition: "Flexibel omgaan met verandering en effectief blijven in wisselende omstandigheden.",
+                behavior: "Past aanpak aan, blijft kalm bij onverwachte wendingen, ziet verandering als kans."
+            },
+            motivatie: {
+                name: "Intrinsieke motivatie",
+                definition: "Gedrevenheid vanuit persoonlijke waarden en zingeving, niet alleen externe beloningen.",
+                behavior: "Werkt met passie, zoekt betekenis, blijft gemotiveerd zonder directe beloning."
+            },
+            samenwerken: {
+                name: "Samenwerken",
+                definition: "Constructief bijdragen aan teamresultaat en effectief werken met anderen.",
+                behavior: "Deelt kennis, ondersteunt collega's, stelt teambelang soms boven eigenbelang."
+            },
+            zelfeffectiviteit: {
+                name: "Zelfeffectiviteit",
+                definition: "Vertrouwen in eigen bekwaamheid om uitdagingen aan te kunnen.",
+                behavior: "Gaat uitdagingen aan, gelooft in eigen kunnen, herstelt snel van tegenslagen."
+            },
+            proactiviteit: {
+                name: "Proactiviteit",
+                definition: "Zelf kansen zien en handelen zonder af te wachten tot anderen initiatief nemen.",
+                behavior: "Neemt initiatief, anticipeert op problemen, wacht niet op instructies."
+            },
+            resultaatgerichtheid: {
+                name: "Resultaatgerichtheid",
+                definition: "Focus op het behalen van meetbare resultaten en concrete doelstellingen.",
+                behavior: "Stelt duidelijke doelen, bewaakt voortgang, laat zich niet afleiden van het einddoel."
+            }
+        };
+
+        // Paired comparisons - elke competentie komt 6x voor voor betrouwbare meting
+        // Items gebaseerd op gedragsindicatoren uit de literatuur
+        const comparisons = [
+            // Ondernemerschap vs anderen
+            {
+                a: { text: "Ik zie regelmatig kansen die anderen over het hoofd zien", comp: "ondernemerschap" },
+                b: { text: "Ik analyseer situaties grondig voordat ik conclusies trek", comp: "intelligentie" }
+            },
+            {
+                a: { text: "Ik durf risico's te nemen als de potentiële opbrengst groot is", comp: "ondernemerschap" },
+                b: { text: "Ik zorg dat mijn beslissingen financieel onderbouwd zijn", comp: "besluitvaardigheid" }
+            },
+            {
+                a: { text: "Ik start liever iets nieuws dan dat ik bestaande processen optimaliseer", comp: "ondernemerschap" },
+                b: { text: "Ik pas me makkelijk aan wanneer plannen veranderen", comp: "aanpassingsvermogen" }
+            },
+
+            // Visie vs anderen
+            {
+                a: { text: "Ik denk vaak na over waar we over 5 jaar willen staan", comp: "visie" },
+                b: { text: "Ik focus me op het behalen van de doelen van vandaag", comp: "resultaatgerichtheid" }
+            },
+            {
+                a: { text: "Ik kan anderen inspireren met een beeld van de toekomst", comp: "visie" },
+                b: { text: "Ik merk snel wat anderen voelen of nodig hebben", comp: "sensitiviteit" }
+            },
+            {
+                a: { text: "Ik verbind dagelijkse taken aan grotere, strategische doelen", comp: "visie" },
+                b: { text: "Ik handel vanuit wat ik persoonlijk belangrijk vind", comp: "motivatie" }
+            },
+
+            // Intelligentie vs anderen
+            {
+                a: { text: "Ik kan nieuwe, complexe informatie snel doorgronden", comp: "intelligentie" },
+                b: { text: "Ik werk graag samen met anderen aan een gezamenlijk doel", comp: "samenwerken" }
+            },
+            {
+                a: { text: "Ik los problemen op door logisch te redeneren", comp: "intelligentie" },
+                b: { text: "Ik vertrouw erop dat ik de meeste uitdagingen aankan", comp: "zelfeffectiviteit" }
+            },
+            {
+                a: { text: "Ik zie snel patronen en verbanden in complexe situaties", comp: "intelligentie" },
+                b: { text: "Ik onderneem actie zonder te wachten op instructies", comp: "proactiviteit" }
+            },
+
+            // Besluitvaardigheid vs anderen
+            {
+                a: { text: "Ik weeg kosten en baten zorgvuldig af voordat ik beslis", comp: "besluitvaardigheid" },
+                b: { text: "Ik houd rekening met hoe mijn beslissingen anderen raken", comp: "sensitiviteit" }
+            },
+            {
+                a: { text: "Ik neem liever snel een beslissing dan lang te twijfelen", comp: "besluitvaardigheid" },
+                b: { text: "Ik blijf effectief functioneren als omstandigheden veranderen", comp: "aanpassingsvermogen" }
+            },
+            {
+                a: { text: "Ik maak keuzes op basis van data en onderbouwde argumenten", comp: "besluitvaardigheid" },
+                b: { text: "Ik word gedreven door wat ik zinvol en betekenisvol vind", comp: "motivatie" }
+            },
+
+            // Sensitiviteit vs anderen
+            {
+                a: { text: "Ik voel aan wanneer iemand ergens mee zit, ook als die persoon het niet zegt", comp: "sensitiviteit" },
+                b: { text: "Ik help collega's graag om samen een beter resultaat te bereiken", comp: "samenwerken" }
+            },
+            {
+                a: { text: "Ik stem mijn communicatie af op wat de ander nodig heeft", comp: "sensitiviteit" },
+                b: { text: "Ik ga ervan uit dat ik nieuwe vaardigheden kan leren als dat nodig is", comp: "zelfeffectiviteit" }
+            },
+            {
+                a: { text: "Ik merk subtiele signalen op in hoe mensen reageren", comp: "sensitiviteit" },
+                b: { text: "Ik signaleer problemen voordat ze urgent worden", comp: "proactiviteit" }
+            },
+
+            // Aanpassingsvermogen vs anderen
+            {
+                a: { text: "Ik zie verandering als een kans, niet als een bedreiging", comp: "aanpassingsvermogen" },
+                b: { text: "Ik haal energie uit het bereiken van concrete doelen", comp: "resultaatgerichtheid" }
+            },
+            {
+                a: { text: "Ik schakel makkelijk tussen verschillende taken en prioriteiten", comp: "aanpassingsvermogen" },
+                b: { text: "Ik spot kansen om zaken commercieel te benutten", comp: "ondernemerschap" }
+            },
+            {
+                a: { text: "Ik blijf kalm en effectief als plannen plotseling veranderen", comp: "aanpassingsvermogen" },
+                b: { text: "Ik denk na over de langetermijngevolgen van beslissingen", comp: "visie" }
+            },
+
+            // Motivatie vs anderen
+            {
+                a: { text: "Ik werk het hardst aan taken die ik persoonlijk waardevol vind", comp: "motivatie" },
+                b: { text: "Ik deel mijn kennis graag met teamleden", comp: "samenwerken" }
+            },
+            {
+                a: { text: "Ik blijf gemotiveerd ook zonder externe beloningen of erkenning", comp: "motivatie" },
+                b: { text: "Ik geloof dat ik met inzet de meeste obstakels kan overwinnen", comp: "zelfeffectiviteit" }
+            },
+            {
+                a: { text: "Ik zoek werk dat aansluit bij mijn persoonlijke waarden", comp: "motivatie" },
+                b: { text: "Ik neem het voortouw zonder dat iemand mij dat vraagt", comp: "proactiviteit" }
+            },
+
+            // Samenwerken vs anderen
+            {
+                a: { text: "Ik stel het teambelang soms boven mijn eigen belang", comp: "samenwerken" },
+                b: { text: "Ik meet succes af aan concrete, meetbare resultaten", comp: "resultaatgerichtheid" }
+            },
+            {
+                a: { text: "Ik zorg dat iedereen in het team kan bijdragen", comp: "samenwerken" },
+                b: { text: "Ik durf te handelen ook als de uitkomst onzeker is", comp: "ondernemerschap" }
+            },
+            {
+                a: { text: "Ik ondersteun collega's actief bij hun werk", comp: "samenwerken" },
+                b: { text: "Ik houd het einddoel voor ogen bij alles wat ik doe", comp: "visie" }
+            },
+
+            // Zelfeffectiviteit vs anderen
+            {
+                a: { text: "Ik ga nieuwe uitdagingen met vertrouwen tegemoet", comp: "zelfeffectiviteit" },
+                b: { text: "Ik analyseer informatie systematisch om tot inzichten te komen", comp: "intelligentie" }
+            },
+            {
+                a: { text: "Ik herstel snel als iets niet lukt en probeer het opnieuw", comp: "zelfeffectiviteit" },
+                b: { text: "Ik houd bij beslissingen rekening met de financiële impact", comp: "besluitvaardigheid" }
+            },
+            {
+                a: { text: "Ik twijfel zelden aan mijn vermogen om taken uit te voeren", comp: "zelfeffectiviteit" },
+                b: { text: "Ik voel aan wat er in een groep speelt", comp: "sensitiviteit" }
+            },
+
+            // Proactiviteit vs anderen
+            {
+                a: { text: "Ik wacht niet af, maar onderneem zelf actie", comp: "proactiviteit" },
+                b: { text: "Ik pas mijn aanpak aan als de situatie daarom vraagt", comp: "aanpassingsvermogen" }
+            },
+            {
+                a: { text: "Ik voorkom problemen door er vroeg op te anticiperen", comp: "proactiviteit" },
+                b: { text: "Ik doe mijn werk omdat ik het zinvol vind, niet voor de beloning", comp: "motivatie" }
+            },
+            {
+                a: { text: "Ik zie wat er moet gebeuren en pak het op", comp: "proactiviteit" },
+                b: { text: "Ik werk effectief samen, ook met mensen die anders denken", comp: "samenwerken" }
+            },
+
+            // Resultaatgerichtheid vs anderen
+            {
+                a: { text: "Ik stel duidelijke, meetbare doelen voor mezelf", comp: "resultaatgerichtheid" },
+                b: { text: "Ik durf beslissingen te nemen met beperkte informatie", comp: "ondernemerschap" }
+            },
+            {
+                a: { text: "Ik laat me niet afleiden van het behalen van mijn doelen", comp: "resultaatgerichtheid" },
+                b: { text: "Ik denk strategisch na over de koers die we moeten varen", comp: "visie" }
+            },
+            {
+                a: { text: "Ik bewaar overzicht en focus op wat echt resultaat oplevert", comp: "resultaatgerichtheid" },
+                b: { text: "Ik vind logische oplossingen voor complexe vraagstukken", comp: "intelligentie" }
+            }
+        ];
+
+        // State
+        let currentQuestion = 0;
+        let answers = [];
+        let shuffledComparisons = [];
+
+        function shuffleArray(arr) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function startAssessment() {
+            // Shuffle comparisons and randomly swap A/B within each
+            shuffledComparisons = shuffleArray(comparisons).map(comp => {
+                if (Math.random() > 0.5) {
+                    return { a: comp.b, b: comp.a };
+                }
+                return { ...comp };
+            });
+
+            answers = new Array(shuffledComparisons.length).fill(null);
+            currentQuestion = 0;
+
+            document.getElementById('introScreen').classList.remove('active');
+            document.getElementById('questionScreen').classList.add('active');
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('progressText').style.display = 'block';
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const comparison = shuffledComparisons[currentQuestion];
+
+            document.getElementById('questionNumber').textContent =
+                `Vraag ${currentQuestion + 1} van ${shuffledComparisons.length}`;
+
+            const progress = (currentQuestion / shuffledComparisons.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `${Math.round(progress)}% voltooid`;
+
+            const container = document.getElementById('comparisonOptions');
+            container.innerHTML = `
+                <div class="comparison-option ${answers[currentQuestion] === 'a' ? 'selected' : ''}" onclick="selectOption('a')">
+                    <div class="option-label">Optie A</div>
+                    <div class="option-text">${comparison.a.text}</div>
+                </div>
+                <div class="vs-divider">— of —</div>
+                <div class="comparison-option ${answers[currentQuestion] === 'b' ? 'selected' : ''}" onclick="selectOption('b')">
+                    <div class="option-label">Optie B</div>
+                    <div class="option-text">${comparison.b.text}</div>
+                </div>
+            `;
+
+            document.getElementById('prevBtn').style.visibility =
+                currentQuestion === 0 ? 'hidden' : 'visible';
+
+            document.getElementById('nextBtn').disabled = answers[currentQuestion] === null;
+            document.getElementById('nextBtn').textContent =
+                currentQuestion === shuffledComparisons.length - 1 ? 'Resultaten' : 'Volgende';
+        }
+
+        function selectOption(option) {
+            answers[currentQuestion] = option;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion] === null) return;
+
+            if (currentQuestion < shuffledComparisons.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('questionScreen').classList.remove('active');
+            document.getElementById('processingScreen').classList.add('active');
+            document.getElementById('progressContainer').style.display = 'none';
+            document.getElementById('progressText').style.display = 'none';
+
+            setTimeout(calculateResults, 1500);
+        }
+
+        function calculateResults() {
+            // Calculate scores
+            const scores = {};
+            Object.keys(competencies).forEach(c => scores[c] = 0);
+
+            shuffledComparisons.forEach((comparison, index) => {
+                const answer = answers[index];
+                if (answer) {
+                    const chosen = comparison[answer];
+                    const notChosen = comparison[answer === 'a' ? 'b' : 'a'];
+                    scores[chosen.comp] += 1;
+                    // Niet-gekozen krijgt geen punten (niet negatief, want dat kan frustratie geven)
+                }
+            });
+
+            // Bereken max mogelijke score per competentie
+            const maxPerComp = {};
+            Object.keys(competencies).forEach(c => maxPerComp[c] = 0);
+            shuffledComparisons.forEach(comp => {
+                maxPerComp[comp.a.comp]++;
+                maxPerComp[comp.b.comp]++;
+            });
+
+            // Sorteer op score
+            const sorted = Object.entries(scores)
+                .map(([key, score]) => ({
+                    key,
+                    score,
+                    max: maxPerComp[key],
+                    percentage: Math.round((score / maxPerComp[key]) * 100)
+                }))
+                .sort((a, b) => b.percentage - a.percentage);
+
+            // Render results
+            document.getElementById('processingScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            const topContainer = document.getElementById('topResults');
+            const allContainer = document.getElementById('allResults');
+
+            topContainer.innerHTML = sorted.slice(0, 5).map((item, i) => renderResultItem(item, i + 1)).join('');
+            allContainer.innerHTML = sorted.slice(5).map((item, i) => renderResultItem(item, i + 6)).join('');
+
+            window.assessmentResults = sorted;
+        }
+
+        function renderResultItem(item, rank) {
+            const comp = competencies[item.key];
+            return `
+                <div class="result-item">
+                    <div class="result-header">
+                        <div class="result-rank">${rank}</div>
+                        <div class="result-name">${comp.name}</div>
+                        <div class="result-score">${item.percentage}%</div>
+                    </div>
+                    <div class="score-bar-container">
+                        <div class="score-bar" style="width: ${item.percentage}%"></div>
+                    </div>
+                    <div class="result-description">${comp.definition}</div>
+                </div>
+            `;
+        }
+
+        function toggleAllResults() {
+            const container = document.getElementById('allResults');
+            const btn = document.getElementById('showAllBtn');
+            container.classList.toggle('show');
+            btn.textContent = container.classList.contains('show')
+                ? 'Verberg overige competenties'
+                : 'Toon alle 11 competenties';
+        }
+
+        function copyResults() {
+            if (!window.assessmentResults) return;
+
+            let text = "Mijn Competentie Profiel\n";
+            text += "========================\n\n";
+
+            window.assessmentResults.forEach((item, i) => {
+                const comp = competencies[item.key];
+                text += `${i + 1}. ${comp.name} (${item.percentage}%)\n`;
+                text += `   ${comp.definition}\n\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Gekopieerd naar klembord');
+            });
+        }
+
+        function downloadResults() {
+            if (!window.assessmentResults) return;
+
+            const results = window.assessmentResults;
+            const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Competentie Profiel</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:20px;color:#333}
+h1{color:#4F46E5;border-bottom:2px solid #4F46E5;padding-bottom:10px}
+.item{margin:20px 0;padding:15px;background:#f8fafc;border-left:4px solid #4F46E5;border-radius:0 8px 8px 0}
+.item h3{margin:0 0 8px 0;display:flex;align-items:center;gap:10px}
+.rank{background:#4F46E5;color:white;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.score{margin-left:auto;color:#4F46E5;font-weight:bold}
+.bar{background:#e2e8f0;height:6px;border-radius:3px;margin:10px 0}
+.bar-fill{background:linear-gradient(90deg,#4F46E5,#10B981);height:100%;border-radius:3px}
+p{margin:0;color:#64748b;font-size:14px}
+.date{color:#94a3b8;font-size:12px;margin-top:30px}
+</style></head><body>
+<h1>Competentie Profiel</h1>
+${results.map((item, i) => `
+<div class="item">
+<h3><span class="rank">${i+1}</span>${competencies[item.key].name}<span class="score">${item.percentage}%</span></h3>
+<div class="bar"><div class="bar-fill" style="width:${item.percentage}%"></div></div>
+<p>${competencies[item.key].definition}</p>
+</div>`).join('')}
+<p class="date">Gegenereerd op ${new Date().toLocaleDateString('nl-NL')}</p>
+</body></html>`;
+
+            const win = window.open('', '_blank');
+            win.document.write(html);
+            win.document.close();
+            showToast('PDF venster geopend - Ctrl/Cmd+P om te printen');
+        }
+
+        function restartAssessment() {
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.add('active');
+            document.getElementById('allResults').classList.remove('show');
+            document.getElementById('showAllBtn').textContent = 'Toon alle 11 competenties';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    </script>
+</body>
+</html>
